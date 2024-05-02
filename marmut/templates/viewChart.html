@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chart List</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2>CHART LIST</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Tipe</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Daily Top 20</td>
+        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyTopModal">Lihat Daftar Lagu</button></td>
+      </tr>
+      <tr>
+        <td>Weekly Top 20</td>
+        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#weeklyTopModal">Lihat Daftar Lagu</button></td>
+      </tr>
+      <!-- Add more rows for additional chart types -->
+    </tbody>
+  </table>
+
+  <a href="#" class="btn btn-primary">Kembali</a>
+</div>
+
+<!-- Daily Top Modal -->
+<div class="modal fade" id="dailyTopModal" tabindex="-1" role="dialog" aria-labelledby="dailyTopModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="dailyTopModalLabel">Daily Top 20</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Insert daily top songs here -->
+        <p>Song1 by Artist1</p>
+        <p>Song2 by Artist2</p>
+        <!-- Add more songs as needed -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Weekly Top Modal -->
+<div class="modal fade" id="weeklyTopModal" tabindex="-1" role="dialog" aria-labelledby="weeklyTopModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="weeklyTopModalLabel">Weekly Top 20</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Insert weekly top songs here -->
+        <p>Song3 by Artist3</p>
+        <p>Song4 by Artist4</p>
+        <!-- Add more songs as needed -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
