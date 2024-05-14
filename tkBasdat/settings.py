@@ -85,6 +85,9 @@ DATABASES = {
         'PASSWORD': os.getenv('DB_PASSWORD'),
         'HOST': 'aws-0-ap-southeast-1.pooler.supabase.com',
         'PORT': '5432',
+        'OPTIONS': {
+            'options': '-c search_path=marmut'
+        }
     }
 }
 

@@ -4,7 +4,7 @@
 
 ```pip install -r requirements```
 
-2. lalu buat file .env di root folder, terus tambahkan 
+2. lalu buat file dengan nama ".env" di root folder, terus tambahkan 
 
 ```DB_PASSWORD = '[db_password]'```
 

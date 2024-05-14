@@ -12,15 +12,21 @@
   <h2>PODCAST DETAIL</h2>
   <div class="card mb-3">
     <div class="card-body">
-      <h5 class="card-title">Judul: Podcast1</h5>
+      <h5 class="card-title">Judul: {{ podcast.judul }}</h5>
       <p class="card-text">Genre(s): <br>
-        - Genre1 <br>
-        - Genre2</p>
-      <p class="card-text">Podcaster: Artist1</p>
-      <p class="card-text">Total Durasi: 8 jam 20 menit</p>
-      <p class="card-text">Tanggal Rilis: 18/03/24</p>
-      <p class="card-text">Tahun: 2024</p>
-      <a href="#" class="btn btn-primary">Kembali</a>
+      {% for genre in podcast.genre %}
+        - {{ genre }} <br>
+      {% endfor %}
+      </p>
+      <!-- ... -->
+      {% for episode in episodes %}
+        <tr>
+          <td>{{ episode.judul }}</td>
+          <td>{{ episode.deskripsi }}</td>
+          <td>{{ episode.durasi }}</td>
+          <td>{{ episode.tanggal_rilis }}</td>
+        </tr>
+      {% endfor %}
     </div>
   </div>
 
