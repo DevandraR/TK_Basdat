@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marmut Podcast Management</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2>CREATE PODCAST</h2>
+  <form>
+    <div class="form-group">
+      <label for="podcastTitle">Judul:</label>
+      <input type="text" class="form-control" id="podcastTitle">
+    </div>
+    <div class="form-group">
+      <label for="podcastGenre">Genre:</label>
+      <select multiple class="form-control" id="podcastGenre">
+        <!-- Multiselect daftar genre -->
+        <option>Genre1</option>
+        <option>Genre2</option>
+        <option>Genre3</option>
+        <!-- Tambahkan genre lainnya sesuai kebutuhan -->
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="podcastDuration">Durasi:</label>
+      <input type="text" class="form-control" id="podcastDuration">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+  <hr>
+
+  <h2>LIST PODCAST</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Judul</th>
+        <th>Jumlah Episode</th>
+        <th>Total Durasi</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Podcast1</td>
+        <td>0</td>
+        <td>0 menit</td>
+        <td>
+          <a href="#">Lihat Daftar Episode</a> |
+          <a href="#">Tambah Episode</a> |
+          <a href="#">Hapus</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Podcast2</td>
+        <td>2</td>
+        <td>4 menit</td>
+        <td>
+          <a href="#">Lihat Daftar Episode</a> |
+          <a href="#">Tambah Episode</a> |
+          <a href="#">Hapus</a>
+        </td>
+      </tr>
+      <!-- Tambahkan baris untuk podcast lainnya sesuai kebutuhan -->
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h2>CREATE EPISODE</h2>
+  <form>
+    <div class="form-group">
+      <label for="episodePodcast">Podcast:</label>
+      <select class="form-control" id="episodePodcast">
+        <option>Podcast1</option>
+        <option>Podcast2</option>
+        <!-- Tambahkan podcast lainnya sesuai kebutuhan -->
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="episodeTitle">Judul:</label>
+      <input type="text" class="form-control" id="episodeTitle">
+    </div>
+    <div class="form-group">
+      <label for="episodeDescription">Deskripsi:</label>
+      <input type="text" class="form-control" id="episodeDescription">
+    </div>
+    <div class="form-group">
+      <label for="episodeDuration">Durasi:</label>
+      <input type="text" class="form-control" id="episodeDuration">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+  <hr>
+
+  <h2>DAFTAR EPISODE PADA PODCAST1</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Judul Episode</th>
+        <th>Deskripsi</th>
+        <th>Durasi</th>
+        <th>Tanggal</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>SubJudul1</td>
+        <td>Lorem Ipsum ...</td>
+        <td>59 menit</td>
+        <td>18/03/2024</td>
+        <td><a href="#">Hapus</a></td>
+      </tr>
+      <tr>
+        <td>SubJudul2</td>
+        <td>Lorem Ipsum ...</td>
+        <td>1 jam 2 menit</td>
+        <td>25/03/2024</td>
+        <td><a href="#">Hapus</a></td>
+      </tr>
+      <!-- Tambahkan baris untuk episode lainnya sesuai kebutuhan -->
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

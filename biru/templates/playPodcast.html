@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Podcast Detail</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2>PODCAST DETAIL</h2>
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">Judul: {{ podcast.judul }}</h5>
+      <p class="card-text">Genre(s): <br>
+      {% for genre in podcast.genre %}
+        - {{ genre }} <br>
+      {% endfor %}
+      </p>
+      <!-- ... -->
+      {% for episode in episodes %}
+        <tr>
+          <td>{{ episode.judul }}</td>
+          <td>{{ episode.deskripsi }}</td>
+          <td>{{ episode.durasi }}</td>
+          <td>{{ episode.tanggal_rilis }}</td>
+        </tr>
+      {% endfor %}
+    </div>
+  </div>
+
+  <h2>DAFTAR EPISODE</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Judul Episode</th>
+        <th>Deskripsi</th>
+        <th>Durasi</th>
+        <th>Tanggal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>SubJudul1</td>
+        <td>Lorem Ipsum ...</td>
+        <td>59 menit</td>
+        <td>18/03/2024</td>
+      </tr>
+      <tr>
+        <td>SubJudul2</td>
+        <td>Lorem Ipsum ...</td>
+        <td>1 jam 2 menit</td>
+        <td>25/03/2024</td>
+      </tr>
+      <!-- Add more rows for additional episodes -->
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
