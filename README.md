@@ -9,3 +9,5 @@
 ```DB_PASSWORD = '[db_password]'```
 
 3. db_password bisa diminta di line
+
+4. Kerjainnya di app sesuai warna masing masing, app marmut untuk fitur wajib
