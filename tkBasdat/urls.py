@@ -18,7 +18,9 @@ from django.contrib import admin
 from django.urls import path, include
 from marmut import views as marmut_views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('app/', marmut_views.index),
+    path('biru/', include('biru.urls')),
 ]
