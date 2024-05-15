@@ -64,6 +64,80 @@ def homepage(request):
 def register(request):
     return render(request, 'register.html')
 
+def register_user(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        name = request.POST['name']
+        gender = request.POST['gender']
+        birthplace = request.POST['birthplace']
+        birthdate = request.POST['birthdate']
+        city = request.POST['city']
+        role = request.POST.getlist('role')
+
+        # Convert gender to integer
+        gender = 1 if gender == 'Male' else 2
+
+        with connection.cursor() as cursor:
+            # Check if email already exists
+            cursor.execute("SELECT email FROM marmut.akun WHERE email = %s", [email])
+            user = cursor.fetchone()
+
+            if user is not None:
+                messages.error(request, 'Email already exists!')
+                return redirect('register')
+
+            # Insert into akun table
+            cursor.execute("INSERT INTO marmut.akun (email, password, nama, gender, tempat_lahir, tanggal_lahir, is_verified, kota_asal) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", [email, password, name, gender, birthplace, birthdate, len(role) > 0, city])
+
+            # Insert into role table
+            for r in role:
+                if r == 'Podcaster':
+                    cursor.execute("INSERT INTO marmut.podcaster (email) VALUES (%s)", [email])
+                elif r == 'Artist':
+                    cursor.execute("INSERT INTO marmut.artist (email_akun) VALUES (%s)", [email])
+                elif r == 'Songwriter':
+                    cursor.execute("INSERT INTO marmut.songwriter (email_akun) VALUES (%s)", [email])
+
+            # If no role is selected, the user is a non-premium user
+            if len(role) == 0:
+                cursor.execute("INSERT INTO marmut.non_premium (email) VALUES (%s)", [email])
+
+            messages.success(request, 'Registration successful!')
+            return redirect('login')
+
+    else:
+        return redirect('register')
+
+
+def register_label(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        name = request.POST['name']
+        contact = request.POST['contact']
+
+        with connection.cursor() as cursor:
+            # Check if email already exists
+            cursor.execute("SELECT email FROM marmut.akun WHERE email = %s", [email])
+            user = cursor.fetchone()
+
+            if user is not None:
+                messages.error(request, 'Email already exists!')
+                return redirect('register')
+
+            # Insert into akun table
+            cursor.execute("INSERT INTO marmut.akun (email, password, nama) VALUES (%s, %s, %s)", [email, password, name])
+
+            # Insert into label table
+            cursor.execute("INSERT INTO marmut.label (email, password, nama, kontak) VALUES (%s, %s, %s, %s)", [email, password, name, contact])
+
+            messages.success(request, 'Registration successful!')
+            return redirect('login')
+
+    else:
+        return redirect('register')
+
 
 def logout(request):
     try:
