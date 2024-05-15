@@ -1,140 +1,63 @@
-<!DOCTYPE html>
-<html lang="en" style="height: 100%;">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marmut - Homepage </title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
-<body style="display: flex; flex-direction: column; height: 100%;">
-     <!-- Navbar -->
-     <nav class="navbar navbar-expand-lg navbar-light bg-success">
-        <a class="navbar-brand text-white" href="#">Marmut</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon " style="filter: invert(100%);"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <!-- <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Login</a>
-                </li> -->
+{% extends 'base.html' %}
 
-                <!-- These links are only visible to logged in users -->
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Chart</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Playlist</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Subscribe</a>
-                </li>
-                <!-- <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Downloaded Song</a>
-                </li> -->
-                <!-- <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Podcast</a>
-                </li> -->
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Album & Songs</a>
-                </li>
-                <!-- <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Album</a>
-                </li> -->
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Royalty</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Logout</a>
-                </li>
-            </ul>
-        
-            <!-- Search bar -->
-            <form class="form-inline ml-auto my-2 my-lg-0 justify-content-end">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search text-white" viewBox="0 0 16 16">
-                        <path d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
-                        <path d="M6.5 12a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0-1a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9z"/>
-                    </svg>
-                </button>
-            </form>
-        </div>
-        
-    </nav>
+{% block title %}
+Homepage
+{% endblock %}
 
-    <div class="container mt-5" style="display: flex; flex-direction: column; justify-content: center; height: 100vh;">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="mb-3 text-center">
-                    <h1 class="text-dark">Marmut: Your Melody, Your Moment</h1>
-                    <div class="container mt-5">
-                        <div class="card-deck">
-                            <div class="col-md-4">
-                                <div class="card mb-4">
-                                    <div class="card-body">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-music-note-list text-warning" viewBox="0 0 16 16">
-                                            <path d="M12 13c0 1.105-1.12 2-2.5 2S7 14.105 7 13s1.12-2 2.5-2 2.5.895 2.5 2"/>
-                                            <path fill-rule="evenodd" d="M12 3v10h-1V3z"/>
-                                            <path d="M11 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 16 2.22V4l-5 1z"/>
-                                            <path fill-rule="evenodd" d="M0 11.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 7H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 3H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5"/>
-                                        </svg>
-                                        <h3 class="card-title">Discover New Sounds</h3>
-                                        <p>Vast universe of music tailored to your taste</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card mb-4">
-                                    <div class="card-body">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-music-player-fill text-warning" viewBox="0 0 16 16">
-                                            <path d="M8 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
-                                            <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm1 2h6a1 1 0 0 1 1 1v2.5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1m3 12a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
-                                          </svg>
-                                        <h3 class="card-title" >Your Music, Anywhere</h3>
-                                        <p>Enjoy your favorite tracks on the go, offline or online</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card mb-4">
-                                    <div class="card-body">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-people-fill text-warning" viewBox="0 0 16 16">
-                                            <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
-                                          </svg>
-                                        <h3 class="card-title">Share & Connect The Beat</h3>
-                                        <p>Discover what others are listening to</p>
-                                    </div>
+{% block content %}
+<div class="container mt-5" style="display: flex; flex-direction: column; justify-content: center; height: 100vh;">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="mb-3 text-center">
+                <h1 class="text-dark">Marmut: Your Melody, Your Moment</h1>
+                <div class="container mt-5">
+                    <div class="card-deck">
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-music-note-list text-warning" viewBox="0 0 16 16">
+                                        <path d="M12 13c0 1.105-1.12 2-2.5 2S7 14.105 7 13s1.12-2 2.5-2 2.5.895 2.5 2"/>
+                                        <path fill-rule="evenodd" d="M12 3v10h-1V3z"/>
+                                        <path d="M11 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 16 2.22V4l-5 1z"/>
+                                        <path fill-rule="evenodd" d="M0 11.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 7H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 3H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5"/>
+                                    </svg>
+                                    <h3 class="card-title">Discover New Sounds</h3>
+                                    <p>Vast universe of music tailored to your taste</p>
                                 </div>
                             </div>
                         </div>
-                    </div>                       
-                        <!-- Register Button -->
-                        <a href="register.html" class="btn btn-secondary text-white" role="button">Register</a>
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-music-player-fill text-warning" viewBox="0 0 16 16">
+                                        <path d="M8 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                                        <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm1 2h6a1 1 0 0 1 1 1v2.5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1m3 12a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                                        </svg>
+                                    <h3 class="card-title" >Your Music, Anywhere</h3>
+                                    <p>Enjoy your favorite tracks on the go, offline or online</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-people-fill text-warning" viewBox="0 0 16 16">
+                                        <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                                        </svg>
+                                    <h3 class="card-title">Share & Connect The Beat</h3>
+                                    <p>Discover what others are listening to</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                       
+                    <!-- Register Button -->
+                    <a href="{% url 'register' %}" class="btn btn-secondary text-white" role="button">Register</a>
 
-                         <!-- Login Button -->
-                        <a href="login.html" class="btn btn-secondary text-white" role="button">Login</a>
-
-                </div>
+                    <!-- Login Button -->
+                    <a href="{% url 'login' %}" class="btn btn-secondary text-white" role="button">Login</a>
             </div>
         </div>
     </div>
-
-    <footer class="footer mt-auto py-3 bg-success">
-        <div class="container-fluid"> <!-- Change this to container-fluid -->
-            <span class="text-white">© 2024 Marmut. All rights reserved.</span>
-        </div>
-    </footer>
-                
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-</body>
-</html>
+</div>
+{% endblock %}
