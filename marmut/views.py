@@ -36,12 +36,16 @@ def login(request):
                 cursor.execute("SELECT email FROM marmut.label WHERE email = %s", [email])
                 is_label = cursor.fetchone() is not None
 
+                cursor.execute("SELECT email FROM marmut.non_premium WHERE email = %s", [email])
+                is_non_premium = cursor.fetchone() is not None
+
                 user_type = {
                     'is_podcaster': is_podcaster,
                     'is_premium': is_premium,
                     'is_artist': is_artist,
                     'is_songwriter': is_songwriter,
                     'is_label': is_label,
+                    'is_non_premium': is_non_premium,
                 }
 
                 request.session['user_type'] = user_type

@@ -19,8 +19,8 @@
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">Dashboard</a>
                     </li>
-                    {% if user_type.is_podcaster or user_type.is_artist or user_type.is_songwriter %}
-                        <!-- Navbar for podcasters, artists, and songwriters -->
+                    {% if user_type.is_podcaster or user_type.is_artist or user_type.is_songwriter or user_type.is_non_premium %}
+                        <!-- Navbar for podcasters, artists, songwriters, and non-premium users -->
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#">Chart</a>
                         </li>
@@ -67,12 +67,13 @@
                 {% else %}
                     <!-- Navbar for guests -->
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="login.html">Login</a>
+                        <a class="nav-link text-white" href="{% url 'login' %}">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="register.html">Register</a>
+                        <a class="nav-link text-white" href="{% url 'register' %}">Register</a>
                     </li>
                 {% endif %}
+
             </ul>
         </div>
     </nav>
