@@ -50,12 +50,14 @@ Homepage
                             </div>
                         </div>
                     </div>
-                </div>                       
+                </div> 
+                {% if not user_email %}
                     <!-- Register Button -->
                     <a href="{% url 'register' %}" class="btn btn-secondary text-white" role="button">Register</a>
 
                     <!-- Login Button -->
                     <a href="{% url 'login' %}" class="btn btn-secondary text-white" role="button">Login</a>
+                {% endif %}                      
             </div>
         </div>
     </div>
