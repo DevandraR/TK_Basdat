@@ -22,4 +22,5 @@ from marmut import views as marmut_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('marmut.urls')),
+    path('', include('hijau.urls')),
 ]

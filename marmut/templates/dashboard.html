@@ -23,7 +23,7 @@ Dashboard
                     <!-- Add these fields for Users -->
                     {% if user_type.is_premium or user_type.is_non_premium %}
                     <p><strong>City of Origin:</strong> {{ user_profile.7 }}</p> <!-- Change the field index based on your database schema -->
-                    <p><strong>Gender:</strong> {{ user_profile.3 }}</p> <!-- Change the field index based on your database schema -->
+                    <p><strong>Gender:</strong> {% if user_profile.3 == 1 %}Male{% else %}Female{% endif %}</p>
                     <p><strong>Place of Birth:</strong> {{ user_profile.4 }}</p> <!-- Change the field index based on your database schema -->
                     <p><strong>Date of Birth:</strong> {{ user_profile.5 }}</p> <!-- Change the field index based on your database schema -->
                     <p><strong>Role:</strong> 
