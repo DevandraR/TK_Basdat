@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+User Playlist
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-5">
+                <div class="card-header bg-success text-light text-center">
+                    <h3 class="card-title">User Playlist</h3>
+                </div>
+                <div class="card-body">
+                    <!-- This is where the playlist information will go -->
+                    {% if playlists %}
+                    <div class="table-responsive">
+                        <table class="table table-centered">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-center">Playlist Title</th>
+                                    <th scope="col" class="text-center">Song Count</th>
+                                    <th scope="col" class="text-center">Total Duration</th>
+                                    <th scope="col" class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for playlist in playlists %}
+                                <tr>
+                                    <td class="text-center">{{ playlist.title }}</td> <!-- Change the field key based on your database schema -->
+                                    <td class="text-center">{{ playlist.song_count }}</td> <!-- Change the field key based on your database schema -->
+                                    <td class="text-center">{{ playlist.total_duration }}</td> <!-- Change the field key based on your database schema -->
+                                    <td class="text-center">
+                                        <a href="{% url 'detail_playlist' playlist.id %}" class="btn btn-primary" role="button">Detail</a> <!-- Change the field key based on your database schema -->
+                                        <a href="{% url 'change_playlist' playlist.id %}" class="btn btn-info" role="button">Change</a> <!-- Change the field key based on your database schema -->
+                                        <button type="button" class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p id="noPlaylistMessage">Anda belum memiliki playlist</p>
+                    {% endif %}
+                    <a href="{% url 'addplaylist' %}" class="btn btn-warning" role="button">Add Playlist</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
