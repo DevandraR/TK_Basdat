@@ -21,6 +21,6 @@ from marmut import views as marmut_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('app/', marmut_views.index),
+    path('marmut/', include('marmut.urls')),
     path('biru/', include('biru.urls')),
 ]
