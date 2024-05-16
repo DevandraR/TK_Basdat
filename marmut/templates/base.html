@@ -14,12 +14,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                {% if user_email %}
+                {% if request.session.user_email %}
                     <!-- Navbar for logged in users -->
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">Dashboard</a>
                     </li>
-                    {% if user_type.is_podcaster or user_type.is_artist or user_type.is_songwriter or user_type.is_non_premium %}
+                    {% if request.session.user_type.is_podcaster or request.session.user_type.is_artist or request.session.user_type.is_songwriter or request.session.user_type.is_non_premium %}
                         <!-- Navbar for podcasters, artists, songwriters, and non-premium users -->
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#">Chart</a>
@@ -31,31 +31,31 @@
                             <a class="nav-link text-white" href="#">Subscribe</a>
                         </li>
                     {% endif %}
-                    {% if user_type.is_premium %}
+                    {% if request.session.user_type.is_premium %}
                         <!-- Navbar for premium users -->
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#">Downloaded Song</a>
                         </li>
                     {% endif %}
-                    {% if user_type.is_podcaster %}
+                    {% if request.session.user_type.is_podcaster %}
                         <!-- Navbar for podcasters -->
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#">Podcast</a>
                         </li>
                     {% endif %}
-                    {% if user_type.is_artist or user_type.is_songwriter %}
+                    {% if request.session.user_type.is_artist or request.session.user_type.is_songwriter %}
                         <!-- Navbar for artists and songwriters -->
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#">Album & Songs</a>
                         </li>
                     {% endif %}
-                    {% if user_type.is_label %}
+                    {% if request.session.user_type.is_label %}
                         <!-- Navbar for labels -->
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#">Album</a>
                         </li>
                     {% endif %}
-                    {% if user_type.is_artist or user_type.is_songwriter or user_type.is_label %}
+                    {% if request.session.user_type.is_artist or request.session.user_type.is_songwriter or request.session.user_type.is_label %}
                         <!-- Navbar for artists, songwriters, and labels -->
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#">Royalty</a>

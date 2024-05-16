@@ -170,9 +170,31 @@ def logout(request):
     return redirect('homepage')
 
 def dashboard(request):
-    user_email = request.session.get('user_email') 
-    user_type = request.session.get('user_type')
-    if user_email is None:
+    email = request.session.get('user_email')  # change 'email' to 'user_email'
+    if email is None:
         return redirect('login')
-    else:
-        return render(request, 'dashboard.html', {'user_email': user_email, 'user_type': user_type})
+
+    with connection.cursor() as cursor:
+        user_type = determine_user_type(email, cursor)
+
+        # Fetch user profile
+        cursor.execute("SELECT * FROM marmut.akun WHERE email = %s", [email])
+        user_profile = cursor.fetchone()
+
+        # Fetch user-specific data
+        user_data = {}
+        if user_type['is_premium'] or user_type['is_non_premium']:
+            cursor.execute("SELECT * FROM marmut.user_playlist WHERE email_pembuat = %s", [email])
+            user_data['playlists'] = cursor.fetchall()
+        if user_type['is_artist'] or user_type['is_songwriter']:
+            cursor.execute("SELECT * FROM marmut.song WHERE id_artist = %s", [email])
+            user_data['songs'] = cursor.fetchall()
+        if user_type['is_podcaster']:
+            cursor.execute("SELECT * FROM marmut.podcast WHERE email_podcaster = %s", [email])
+            user_data['podcasts'] = cursor.fetchall()
+        if user_type['is_label']:
+            cursor.execute("SELECT * FROM marmut.album WHERE id_label = %s", [email])
+            user_data['albums'] = cursor.fetchall()
+
+    return render(request, 'dashboard.html', {'user_profile': user_profile, 'user_data': user_data, 'user_type': user_type})
+
