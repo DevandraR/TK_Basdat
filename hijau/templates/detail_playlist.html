@@ -44,16 +44,19 @@ User Playlist Details
                                 <td>{{ song.artist }}</td>
                                 <td>{{ song.durasi }}</td>
                                 <td>
+                                    <form method="POST" action="{% url 'song_detail' song.id_song %}">
+                                        {% csrf_token %}
+                                        <button type="submit" name="look" class="btn btn-info">Look</button>
+                                    </form>
                                     <form method="POST" action="{% url 'detail_playlist' playlist.id_user_playlist %}">
                                         {% csrf_token %}
-                                        <button type="submit" name="look" value="{{ song.id_song }}" class="btn btn-info">Look</button>
                                         <button type="submit" name="play" value="{{ song.id_song }}" class="btn btn-success">Play</button>
                                         <button type="submit" name="delete" value="{{ song.id_song }}" class="btn btn-danger">Delete</button>
                                     </form>
                                 </td>
                             </tr>
                             {% endfor %}
-                        </tbody>
+                        </tbody>                        
                     </table>
                     <a href="{% url 'addsong' playlist.id_user_playlist %}" class="btn btn-warning" role="button">Add Song</a>
 
