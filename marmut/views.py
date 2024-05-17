@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.db import connection
+import uuid
 
 def determine_user_type(email, cursor):
     cursor.execute("SELECT email FROM marmut.podcaster WHERE email = %s", [email])
@@ -76,7 +77,7 @@ def register_user(request):
         role = request.POST.getlist('role')
 
         # Convert gender to integer
-        gender = 1 if gender == 'Male' else 2
+        gender = 1 if gender == 'Male' else 0
 
         with connection.cursor() as cursor:
             # Check if email already exists
@@ -90,14 +91,25 @@ def register_user(request):
             # Insert into akun table
             cursor.execute("INSERT INTO marmut.akun (email, password, nama, gender, tempat_lahir, tanggal_lahir, is_verified, kota_asal) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", [email, password, name, gender, birthplace, birthdate, len(role) > 0, city])
 
+            # Generate a UUID for the id field
+            id = uuid.uuid4()
+            # Generate a UUID for the id_pemilik_hak_cipta field
+            id_pemilik_hak_cipta = uuid.uuid4()
+
             # Insert into role table
             for r in role:
                 if r == 'Podcaster':
                     cursor.execute("INSERT INTO marmut.podcaster (email) VALUES (%s)", [email])
                 elif r == 'Artist':
-                    cursor.execute("INSERT INTO marmut.artist (email_akun) VALUES (%s)", [email])
+                    # Insert into pemilik_hak_cipta table
+                    cursor.execute("INSERT INTO marmut.pemilik_hak_cipta (id, rate_royalti) VALUES (%s, %s)", [id_pemilik_hak_cipta, 0])
+                    # Insert into artist table
+                    cursor.execute("INSERT INTO marmut.artist (id, email_akun, id_pemilik_hak_cipta) VALUES (%s, %s, %s)", [id, email, id_pemilik_hak_cipta])
                 elif r == 'Songwriter':
-                    cursor.execute("INSERT INTO marmut.songwriter (email_akun) VALUES (%s)", [email])
+                    # Insert into pemilik_hak_cipta table
+                    cursor.execute("INSERT INTO marmut.pemilik_hak_cipta (id, rate_royalti) VALUES (%s, %s)", [id_pemilik_hak_cipta, 0])
+                    # Insert into songwriter table
+                    cursor.execute("INSERT INTO marmut.songwriter (id, email_akun, id_pemilik_hak_cipta) VALUES (%s, %s, %s)", [id, email, id_pemilik_hak_cipta])
 
             # If no role is selected, the user is a non-premium user
             if len(role) == 0:
@@ -117,6 +129,11 @@ def register_label(request):
         name = request.POST['name']
         contact = request.POST['contact']
 
+        # Check if any field is empty
+        if not email or not password or not name or not contact:
+            messages.error(request, 'All fields are required!')
+            return redirect('register')
+
         with connection.cursor() as cursor:
             # Check if email already exists
             cursor.execute("SELECT email FROM marmut.akun WHERE email = %s", [email])
@@ -126,17 +143,23 @@ def register_label(request):
                 messages.error(request, 'Email already exists!')
                 return redirect('register')
 
-            # Insert into akun table
-            cursor.execute("INSERT INTO marmut.akun (email, password, nama) VALUES (%s, %s, %s)", [email, password, name])
+            # Generate a UUID for the id field
+            id = uuid.uuid4()
+            # Generate a UUID for the id_pemilik_hak_cipta field
+            id_pemilik_hak_cipta = uuid.uuid4()
+
+            # Insert into pemilik_hak_cipta table
+            cursor.execute("INSERT INTO marmut.pemilik_hak_cipta (id, rate_royalti) VALUES (%s, %s)", [id_pemilik_hak_cipta, 0])
 
             # Insert into label table
-            cursor.execute("INSERT INTO marmut.label (email, password, nama, kontak) VALUES (%s, %s, %s, %s)", [email, password, name, contact])
+            cursor.execute("INSERT INTO marmut.label (id, email, password, nama, kontak, id_pemilik_hak_cipta) VALUES (%s, %s, %s, %s, %s, %s)", [id, email, password, name, contact, id_pemilik_hak_cipta])
 
             messages.success(request, 'Registration successful!')
             return redirect('login')
 
     else:
         return redirect('register')
+
 
 
 def logout(request):
@@ -147,9 +170,31 @@ def logout(request):
     return redirect('homepage')
 
 def dashboard(request):
-    user_email = request.session.get('user_email') 
-    user_type = request.session.get('user_type')
-    if user_email is None:
+    email = request.session.get('user_email')  # change 'email' to 'user_email'
+    if email is None:
         return redirect('login')
-    else:
-        return render(request, 'dashboard.html', {'user_email': user_email, 'user_type': user_type})
+
+    with connection.cursor() as cursor:
+        user_type = determine_user_type(email, cursor)
+
+        # Fetch user profile
+        cursor.execute("SELECT * FROM marmut.akun WHERE email = %s", [email])
+        user_profile = cursor.fetchone()
+
+        # Fetch user-specific data
+        user_data = {}
+        if user_type['is_premium'] or user_type['is_non_premium']:
+            cursor.execute("SELECT * FROM marmut.user_playlist WHERE email_pembuat = %s", [email])
+            user_data['playlists'] = cursor.fetchall()
+        if user_type['is_artist'] or user_type['is_songwriter']:
+            cursor.execute("SELECT * FROM marmut.song WHERE id_artist = %s", [email])
+            user_data['songs'] = cursor.fetchall()
+        if user_type['is_podcaster']:
+            cursor.execute("SELECT * FROM marmut.podcast WHERE email_podcaster = %s", [email])
+            user_data['podcasts'] = cursor.fetchall()
+        if user_type['is_label']:
+            cursor.execute("SELECT * FROM marmut.album WHERE id_label = %s", [email])
+            user_data['albums'] = cursor.fetchall()
+
+    return render(request, 'dashboard.html', {'user_profile': user_profile, 'user_data': user_data, 'user_type': user_type})
+

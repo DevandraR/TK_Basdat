@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+User Playlist Details
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-5">
+                <div class="card-header bg-success text-light text-center">
+                    <h3 class="card-title">{{ playlist.judul }}</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Title:</strong> {{ playlist.judul }}</p>
+                    <p><strong>Creator:</strong> {{ playlist.email_pembuat }}</p>
+                    <p><strong>Song Count:</strong> {{ playlist.jumlah_lagu }}</p>
+                    <p><strong>Duration Total:</strong> {{ playlist.total_durasi }}</p>
+                    <p><strong>Date made:</strong> {{ playlist.tanggal_dibuat }}</p>
+                    <p><strong>Description:</strong> {{ playlist.deskripsi }}</p>
+                    <!-- Add this inside the card-body div -->
+                    <form method="POST" action="{% url 'shuffle_play' playlist.id_user_playlist %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Shuffle Play</button>
+                    </form>
+
+                    <a href="{% url 'playlist' %}" class="btn btn-secondary">Back</a>
+
+                    <h5 class="card-title mt-4">Song List</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Song Title</th>
+                                <th scope="col">Creator</th>
+                                <th scope="col">Duration</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for song in songs %}
+                            <tr>
+                                <td>{{ song.judul }}</td>
+                                <td>{{ song.artist }}</td>
+                                <td>{{ song.durasi }}</td>
+                                <td>
+                                    <form method="POST" action="{% url 'detail_playlist' playlist.id_user_playlist %}">
+                                        {% csrf_token %}
+                                        <button type="submit" name="look" value="{{ song.id_song }}" class="btn btn-info">Look</button>
+                                        <button type="submit" name="play" value="{{ song.id_song }}" class="btn btn-success">Play</button>
+                                        <button type="submit" name="delete" value="{{ song.id_song }}" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <a href="{% url 'addsong' playlist.id_user_playlist %}" class="btn btn-warning" role="button">Add Song</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
