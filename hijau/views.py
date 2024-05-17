@@ -124,13 +124,15 @@ def add_playlist(request):
         deskripsi = request.POST['deskripsi']
         jumlah_lagu = 0
         tanggal_dibuat = datetime.now()
-        id_playlist = None
         total_durasi = 0
 
         with connection.cursor() as cursor:
+            # Create a new playlist first
+            id_playlist = uuid.uuid4()
+            cursor.execute("INSERT INTO marmut.playlist (id) VALUES (%s)", [id_playlist])
+
             cursor.execute("INSERT INTO marmut.user_playlist (email_pembuat, id_user_playlist, judul, deskripsi, jumlah_lagu, tanggal_dibuat, id_playlist, total_durasi) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", [email_pembuat, id_user_playlist, judul, deskripsi, jumlah_lagu, tanggal_dibuat, id_playlist, total_durasi])
 
         return redirect('playlist')
 
-    return render(request, 'add_playlist.html')
-
+    return render(request, 'addplaylist.html')
