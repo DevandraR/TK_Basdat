@@ -31,7 +31,16 @@ def detail_playlist(request, id_user_playlist):
         cursor.execute("SELECT * FROM marmut.user_playlist WHERE id_user_playlist = %s", [id_user_playlist])
         playlist = dictfetchall(cursor)[0]  # Get the playlist details
 
-        cursor.execute("SELECT * FROM marmut.playlist_song WHERE id_playlist = %s", [playlist['id_playlist']])
+        # Join the playlist_song, song, konten, and akun tables to get the song details
+        cursor.execute("""
+            SELECT k.judul, a.nama as artist, k.durasi
+            FROM marmut.playlist_song ps
+            JOIN marmut.song s ON ps.id_song = s.id_konten
+            JOIN marmut.konten k ON s.id_konten = k.id
+            JOIN marmut.artist ar ON s.id_artist = ar.id
+            JOIN marmut.akun a ON ar.email_akun = a.email
+            WHERE ps.id_playlist = %s
+        """, [playlist['id_playlist']])
         songs = dictfetchall(cursor)  # Get the songs in the playlist
 
     return render(request, 'detail_playlist.html', {'playlist': playlist, 'songs': songs})
