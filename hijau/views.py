@@ -96,13 +96,18 @@ def add_song(request, id_user_playlist):
         id_song = request.POST['song']
 
         with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM marmut.playlist_song WHERE id_playlist = %s AND id_song = %s", [id_user_playlist, id_song])
+            # Get the corresponding id_playlist from the user_playlist table
+            cursor.execute("SELECT id_playlist FROM marmut.user_playlist WHERE id_user_playlist = %s", [id_user_playlist])
+            id_playlist = cursor.fetchone()[0]
+
+            # Check if the song is already in the playlist
+            cursor.execute("SELECT * FROM marmut.playlist_song WHERE id_playlist = %s AND id_song = %s", [id_playlist, id_song])
             if cursor.fetchone() is not None:
                 # If the song is already in the playlist, return an error message
                 return render(request, 'addsong.html', {'error': 'This song is already in the playlist.'})
 
             # If the song is not in the playlist, add it
-            cursor.execute("INSERT INTO marmut.playlist_song (id_playlist, id_song) VALUES (%s, %s)", [id_user_playlist, id_song])
+            cursor.execute("INSERT INTO marmut.playlist_song (id_playlist, id_song) VALUES (%s, %s)", [id_playlist, id_song])
 
         return redirect('detail_playlist', id_user_playlist=id_user_playlist)
 
@@ -112,6 +117,7 @@ def add_song(request, id_user_playlist):
         songs = dictfetchall(cursor)  # Get all songs
 
     return render(request, 'addsong.html', {'songs': songs})
+
 
 def add_playlist(request):
     if not request.session.get('user_email'):
