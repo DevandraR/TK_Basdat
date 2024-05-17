@@ -54,16 +54,20 @@ def shuffle_play(request, id_user_playlist):
         email_pembuat = request.session['user_email']  # Assuming the email is stored in session
 
         with connection.cursor() as cursor:
+            # Get the corresponding id_playlist from the user_playlist table
+            cursor.execute("SELECT id_playlist FROM marmut.user_playlist WHERE id_user_playlist = %s", [id_user_playlist])
+            id_playlist = cursor.fetchone()[0]
+
             cursor.execute("INSERT INTO marmut.akun_play_user_playlist (email_pemain, id_user_playlist, email_pembuat, waktu) VALUES (%s, %s, %s, %s)", [email_pemain, id_user_playlist, email_pembuat, timestamp])
 
-            cursor.execute("SELECT id_song FROM marmut.playlist_song WHERE id_playlist = %s", [id_user_playlist])
+            cursor.execute("SELECT id_song FROM marmut.playlist_song WHERE id_playlist = %s", [id_playlist])
             songs = cursor.fetchall()
 
             for song in songs:
                 cursor.execute("INSERT INTO marmut.akun_play_song (email_pemain, id_song, waktu) VALUES (%s, %s, %s)", [email_pemain, song[0], timestamp])
 
         return redirect(reverse('detail_playlist', args=[id_user_playlist]))
-    
+
 def change_playlist(request, id_user_playlist):
     if request.method == 'POST':
         judul = request.POST['judul']
