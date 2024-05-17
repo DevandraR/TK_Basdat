@@ -46,10 +46,20 @@ def change_playlist(request, id_user_playlist):
     return render(request, 'change_playlist.html', {'playlist': playlist})
 
 def delete_playlist(request, id_user_playlist):
-    with connection.cursor() as cursor:
-        cursor.execute("DELETE FROM marmut.user_playlist WHERE id_user_playlist = %s", [id_user_playlist])
+    if request.method == 'POST':
+        with connection.cursor() as cursor:
+            # Delete the associated records from the akun_play_user_playlist table
+            cursor.execute("DELETE FROM marmut.akun_play_user_playlist WHERE id_user_playlist = %s", [id_user_playlist])
+            # Then delete the playlist from the user_playlist table
+            cursor.execute("DELETE FROM marmut.user_playlist WHERE id_user_playlist = %s", [id_user_playlist])
 
-    return redirect('playlist')
+        return redirect('playlist')
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM marmut.user_playlist WHERE id_user_playlist = %s", [id_user_playlist])
+        playlist = dictfetchall(cursor)[0]  # Get the playlist details
+
+    return render(request, 'delete_playlist.html', {'playlist': playlist})
 
 def add_playlist(request):
     if not request.session.get('user_email'):
