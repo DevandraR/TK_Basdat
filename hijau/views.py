@@ -36,6 +36,8 @@ def detail_playlist(request, id_user_playlist):
 
     return render(request, 'detail_playlist.html', {'playlist': playlist, 'songs': songs})
 
+
+
 def shuffle_play(request, id_user_playlist):
     if request.method == 'POST':
         timestamp = datetime.now()
@@ -85,29 +87,6 @@ def delete_playlist(request, id_user_playlist):
 
     return render(request, 'delete_playlist.html', {'playlist': playlist})
 
-def add_playlist(request):
-    if not request.session.get('user_email'):
-        return redirect('login')
-
-    if request.method == 'POST':
-        judul = request.POST['judul']
-        deskripsi = request.POST['deskripsi']
-        id_user_playlist = uuid.uuid4()  # Generate a new UUID
-
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM marmut.user_playlist WHERE email_pembuat = %s", [request.session['user_email']])
-            if cursor.fetchone() is not None:
-                # If the email_pembuat already exists, update the associated records in the akun_play_user_playlist table
-                cursor.execute("UPDATE marmut.akun_play_user_playlist SET id_user_playlist = %s WHERE id_user_playlist = (SELECT id_user_playlist FROM marmut.user_playlist WHERE email_pembuat = %s)", [id_user_playlist, request.session['user_email']])
-                # Then update the record in the user_playlist table
-                cursor.execute("UPDATE marmut.user_playlist SET id_user_playlist = %s, judul = %s, deskripsi = %s, jumlah_lagu = 0, tanggal_dibuat = CURRENT_DATE, total_durasi = 0 WHERE email_pembuat = %s", [id_user_playlist, judul, deskripsi, request.session['user_email']])
-            else:
-                # If the email_pembuat doesn't exist, insert a new record
-                cursor.execute("INSERT INTO marmut.user_playlist (email_pembuat, id_user_playlist, judul, deskripsi, jumlah_lagu, tanggal_dibuat, total_durasi) VALUES (%s, %s, %s, %s, 0, CURRENT_DATE, 0)", [request.session['user_email'], id_user_playlist, judul, deskripsi])
-
-        return redirect('playlist')
-
-    return render(request, 'addplaylist.html')
 
 def add_song(request, id_user_playlist):
     if not request.session.get('user_email'):
@@ -133,3 +112,25 @@ def add_song(request, id_user_playlist):
         songs = dictfetchall(cursor)  # Get all songs
 
     return render(request, 'addsong.html', {'songs': songs})
+
+def add_playlist(request):
+    if not request.session.get('user_email'):
+        return redirect('login')
+
+    if request.method == 'POST':
+        email_pembuat = request.session['user_email']
+        id_user_playlist = uuid.uuid4()
+        judul = request.POST['judul']
+        deskripsi = request.POST['deskripsi']
+        jumlah_lagu = 0
+        tanggal_dibuat = datetime.now()
+        id_playlist = None
+        total_durasi = 0
+
+        with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO marmut.user_playlist (email_pembuat, id_user_playlist, judul, deskripsi, jumlah_lagu, tanggal_dibuat, id_playlist, total_durasi) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", [email_pembuat, id_user_playlist, judul, deskripsi, jumlah_lagu, tanggal_dibuat, id_playlist, total_durasi])
+
+        return redirect('playlist')
+
+    return render(request, 'add_playlist.html')
+
