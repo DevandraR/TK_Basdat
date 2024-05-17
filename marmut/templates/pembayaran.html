@@ -55,8 +55,8 @@
             </ul>
         
             <!-- Search bar -->
-            <form class="form-inline ml-auto my-2 my-lg-0 justify-content-end">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <form class="form-inline ml-auto my-2 my-lg-0 justify-content-end" action="{% url 'marmut:searchfind' %}" method="get">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q" value="{{ query }}">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search text-white" viewBox="0 0 16 16">
                         <path d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
@@ -86,8 +86,8 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>1 Bulan</td>
-                                    <td>Rp54.900</td>
+                                    <td id="jenisPaket">Loading...</td>
+                                    <td id="hargaPaket">Loading...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -115,6 +115,27 @@
         </div>
     </footer>
     
+    <script>
+        // Function to get URL parameter value by name
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        // Get jenis and harga from URL parameters
+        var jenis = getParameterByName('jenis');
+        var harga = getParameterByName('harga');
+
+        // Set jenis and harga in the table
+        document.getElementById('jenisPaket').textContent = jenis;
+        document.getElementById('hargaPaket').textContent = harga;
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
