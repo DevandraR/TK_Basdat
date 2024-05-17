@@ -1,6 +1,9 @@
+from datetime import datetime, timezone
 from django.shortcuts import render, redirect
 from django.db import connection
 import uuid
+
+from django.urls import reverse
 
 def dictfetchall(cursor):
     "Return all rows from a cursor as a dict"
@@ -33,7 +36,23 @@ def detail_playlist(request, id_user_playlist):
 
     return render(request, 'detail_playlist.html', {'playlist': playlist, 'songs': songs})
 
+def shuffle_play(request, id_user_playlist):
+    if request.method == 'POST':
+        timestamp = datetime.now()
+        email_pemain = request.session['user_email']  # Assuming the email is stored in session
+        email_pembuat = request.session['user_email']  # Assuming the email is stored in session
 
+        with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO marmut.akun_play_user_playlist (email_pemain, id_user_playlist, email_pembuat, waktu) VALUES (%s, %s, %s, %s)", [email_pemain, id_user_playlist, email_pembuat, timestamp])
+
+            cursor.execute("SELECT id_song FROM marmut.playlist_song WHERE id_playlist = %s", [id_user_playlist])
+            songs = cursor.fetchall()
+
+            for song in songs:
+                cursor.execute("INSERT INTO marmut.akun_play_song (email_pemain, id_song, waktu) VALUES (%s, %s, %s)", [email_pemain, song[0], timestamp])
+
+        return redirect(reverse('detail_playlist', args=[id_user_playlist]))
+    
 def change_playlist(request, id_user_playlist):
     if request.method == 'POST':
         judul = request.POST['judul']
