@@ -105,6 +105,31 @@ def list_podcasts(request):
 
     return render(request, 'list_podcasts.html', {'podcasts': podcasts})
 
+def update_podcast(request, podcast_id):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        genre = request.POST.get('genre')
+        duration = request.POST.get('duration')
+
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                UPDATE marmut.KONTEN
+                SET judul = %s, genre = %s, durasi = %s
+                WHERE id = %s
+            """, [title, genre, duration, podcast_id])
+
+        return redirect('list_podcasts')
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                SELECT judul, genre, durasi
+                FROM marmut.KONTEN
+                WHERE id = %s
+            """, [podcast_id])
+            podcast = cursor.fetchone()
+
+        return render(request, 'update_podcast.html', {'podcast': podcast})
+
 def create_episode(request, podcast_id):
     if request.method == 'POST':
         title = request.POST['title']
@@ -142,3 +167,28 @@ def list_episodes(request, podcast_id):
         episodes = cursor.fetchall()
 
     return render(request, 'list_episodes.html', {'episodes': episodes})
+
+def update_episode(request, episode_id):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        duration = request.POST.get('duration')
+
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                UPDATE marmut.EPISODE
+                SET judul = %s, deskripsi = %s, durasi = %s
+                WHERE id = %s
+            """, [title, description, duration, episode_id])
+
+        return redirect('list_episodes')
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                SELECT judul, deskripsi, durasi
+                FROM marmut.EPISODE
+                WHERE id = %s
+            """, [episode_id])
+            episode = cursor.fetchone()
+
+        return render(request, 'update_episode.html', {'episode': episode})
