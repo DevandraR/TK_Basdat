@@ -31,9 +31,22 @@ def detail_playlist(request, id_user_playlist):
         cursor.execute("SELECT * FROM marmut.user_playlist WHERE id_user_playlist = %s", [id_user_playlist])
         playlist = dictfetchall(cursor)[0]  # Get the playlist details
 
+    if request.method == 'POST':
+        if 'play' in request.POST:
+            id_song = request.POST['play']
+            timestamp = datetime.now()
+            email_pemain = request.session['user_email']  # Assuming the email is stored in session
+            with connection.cursor() as cursor:
+                cursor.execute("INSERT INTO marmut.akun_play_song (email_pemain, id_song, waktu) VALUES (%s, %s, %s)", [email_pemain, id_song, timestamp])
+        elif 'delete' in request.POST:
+            id_song = request.POST['delete']
+            with connection.cursor() as cursor:
+                cursor.execute("DELETE FROM marmut.playlist_song WHERE id_playlist = %s AND id_song = %s", [playlist['id_playlist'], id_song])
+
+    with connection.cursor() as cursor:
         # Join the playlist_song, song, konten, and akun tables to get the song details
         cursor.execute("""
-            SELECT k.judul, a.nama as artist, k.durasi
+            SELECT k.judul, a.nama as artist, k.durasi, s.id_konten as id_song
             FROM marmut.playlist_song ps
             JOIN marmut.song s ON ps.id_song = s.id_konten
             JOIN marmut.konten k ON s.id_konten = k.id
@@ -44,7 +57,6 @@ def detail_playlist(request, id_user_playlist):
         songs = dictfetchall(cursor)  # Get the songs in the playlist
 
     return render(request, 'detail_playlist.html', {'playlist': playlist, 'songs': songs})
-
 
 
 def shuffle_play(request, id_user_playlist):

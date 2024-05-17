@@ -25,7 +25,7 @@ User Playlist Details
                         <button type="submit" class="btn btn-primary">Shuffle Play</button>
                     </form>
 
-                    <button type="button" class="btn btn-secondary">Back</button>
+                    <a href="{% url 'playlist' %}" class="btn btn-secondary">Back</a>
 
                     <h5 class="card-title mt-4">Song List</h5>
                     <table class="table">
@@ -44,9 +44,12 @@ User Playlist Details
                                 <td>{{ song.artist }}</td>
                                 <td>{{ song.durasi }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-info">Look</button>
-                                    <button type="button" class="btn btn-success">Play</button>
-                                    <button type="button" class="btn btn-danger">Delete</button>
+                                    <form method="POST" action="{% url 'detail_playlist' playlist.id_user_playlist %}">
+                                        {% csrf_token %}
+                                        <button type="submit" name="look" value="{{ song.id_song }}" class="btn btn-info">Look</button>
+                                        <button type="submit" name="play" value="{{ song.id_song }}" class="btn btn-success">Play</button>
+                                        <button type="submit" name="delete" value="{{ song.id_song }}" class="btn btn-danger">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                             {% endfor %}
