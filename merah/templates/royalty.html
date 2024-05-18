@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royalty</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="d-flex flex-column bg-light" style="height: 100%;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-success">
+        <a class="navbar-brand text-white" href="#">Marmut</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon" style="filter: invert(100%);"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/merah/kelola-album">Album</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/merah/cek-royalti">Royalty</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'logout' %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card mt-5">
+                    <div class="card-header bg-success text-light text-center">
+                        <h3 class="card-title">Royalty List</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Judul Lagu</th>
+                                    <th scope="col">Judul Album</th>
+                                    <th scope="col">Total Play</th>
+                                    <th scope="col">Total Download</th>
+                                    <th scope="col">Total Royalti Didapat</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in result %}
+                                    <tr>
+                                        <td>{{ row.judul_lagu }}</td>
+                                        <td>{{ row.judul_album }}</td>
+                                        <td>{{ row.total_play }}</td>
+                                        <td>{{ row.total_download }}</td>
+                                        <td>Rp{{ row.royalti }},-</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer mt-auto py-3 bg-success">
+        <div class="container-fluid">
+            <span class="text-white">© 2024 Marmut. All rights reserved.</span>
+        </div>
+    </footer>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -22,7 +22,8 @@ from marmut import views as marmut_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('marmut/', include('marmut.urls')),
+    path('', include('marmut.urls')),
     path('biru/', include('biru.urls')),
-    path('', include('hijau.urls')),
+    path('hijau/', include('hijau.urls')),
+     path('merah/', include('merah.urls')),
 ]
