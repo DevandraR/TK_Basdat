@@ -2,6 +2,8 @@ from datetime import datetime, timezone
 from django.shortcuts import render, redirect
 from django.db import connection
 import uuid
+from django.contrib import messages
+
 
 from django.urls import reverse
 
@@ -215,4 +217,102 @@ def play_song(request, id_song):
                 cursor.execute("INSERT INTO marmut.akun_play_song (email_pemain, id_song, waktu) VALUES (%s, %s, %s)", [email_pemain, id_song, timestamp])
                 cursor.execute("UPDATE marmut.song SET total_play = total_play + 1 WHERE id_konten = %s", [id_song])
 
-    return redirect(reverse('song_detail', args=[id_song]))
+
+    with connection.cursor() as cursor:
+        # Get the song details
+        cursor.execute("""
+            SELECT k.judul, a.nama as artist, k.durasi, s.id_konten as id_song, k.tanggal_rilis, k.tahun, s.total_play, s.total_download, al.judul as album
+            FROM marmut.song s
+            JOIN marmut.konten k ON s.id_konten = k.id
+            JOIN marmut.artist ar ON s.id_artist = ar.id
+            JOIN marmut.akun a ON ar.email_akun = a.email
+            LEFT JOIN marmut.album al ON s.id_album = al.id
+            WHERE s.id_konten = %s
+        """, [id_song])
+        song = dictfetchall(cursor)[0]
+
+        # Get the song's genres
+        cursor.execute("""
+            SELECT genre
+            FROM marmut.genre
+            WHERE id_konten = %s
+        """, [id_song])
+        genres = [row[0] for row in cursor.fetchall()]
+
+        # Get the song's songwriters
+        cursor.execute("""
+            SELECT a.nama
+            FROM marmut.songwriter sw
+            JOIN marmut.songwriter_write_song sws ON sw.id = sws.id_songwriter
+            JOIN marmut.akun a ON sw.email_akun = a.email
+            WHERE sws.id_song = %s
+        """, [id_song])
+        songwriters = [row[0] for row in cursor.fetchall()]
+
+    song['genres'] = genres
+    song['songwriters'] = songwriters
+
+    return render(request, 'playsong.html', {'song': song})
+
+# views.py
+def download_song(request, id_song):
+    email_pemain = request.session['user_email']  # Assuming the email is stored in session
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM marmut.downloaded_song WHERE id_song = %s AND email_downloader = %s", [id_song, email_pemain])
+        song_already_downloaded = cursor.fetchone()
+        if song_already_downloaded:
+            # Song has already been downloaded by this user
+            cursor.execute("SELECT judul FROM marmut.konten WHERE id = %s", [id_song])
+            song_title = cursor.fetchone()[0]
+            return render(request, 'already_downloaded.html', {'song': {'judul': song_title}})
+        else:
+            # Download the song
+            cursor.execute("INSERT INTO marmut.downloaded_song (id_song, email_downloader) VALUES (%s, %s)", [id_song, email_pemain])
+            cursor.execute("UPDATE marmut.song SET total_download = total_download + 1 WHERE id_konten = %s", [id_song])
+            cursor.execute("SELECT judul FROM marmut.konten WHERE id = %s", [id_song])
+            song_title = cursor.fetchone()[0]
+            return render(request, 'download_success.html', {'song': {'judul': song_title}})
+
+def add_to_playlist(request, id_song):
+    if not request.session.get('user_email'):
+        return redirect('login')
+
+    email = request.session['user_email']
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM marmut.user_playlist WHERE email_pembuat = %s", [email])
+        playlists = dictfetchall(cursor)
+
+    if not playlists:
+        messages.error(request, "Anda belum membuat playlist. Silakan buat playlist terlebih dahulu.")
+        return redirect('song_detail', id_song=id_song)
+
+    return render(request, 'add_to_playlist.html', {'playlists': playlists, 'song_id': id_song})
+
+# Function untuk memproses penambahan lagu ke playlist
+def submit_add_to_playlist(request, id_song):
+    if not request.session.get('user_email'):
+        return redirect('login')
+
+    email = request.session['user_email']
+    id_user_playlist = request.POST['playlist']
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT id_playlist FROM marmut.user_playlist WHERE id_user_playlist = %s", [id_user_playlist])
+        id_playlist = cursor.fetchone()[0]
+
+        cursor.execute("SELECT * FROM marmut.playlist_song WHERE id_playlist = %s AND id_song = %s", [id_playlist, id_song])
+        if cursor.fetchone() is not None:
+            cursor.execute("SELECT judul FROM marmut.konten WHERE id = %s", [id_song])
+            song_title = cursor.fetchone()[0]
+            cursor.execute("SELECT judul FROM marmut.user_playlist WHERE id_user_playlist = %s", [id_user_playlist])
+            playlist_title = cursor.fetchone()[0]
+            return render(request, 'add_to_playlist_result.html', {'success': False, 'song_title': song_title, 'playlist_title': playlist_title, 'song_id': id_song, 'playlist_id': id_user_playlist})
+
+        cursor.execute("INSERT INTO marmut.playlist_song (id_playlist, id_song) VALUES (%s, %s)", [id_playlist, id_song])
+        cursor.execute("SELECT judul FROM marmut.konten WHERE id = %s", [id_song])
+        song_title = cursor.fetchone()[0]
+        cursor.execute("SELECT judul FROM marmut.user_playlist WHERE id_user_playlist = %s", [id_user_playlist])
+        playlist_title = cursor.fetchone()[0]
+
+    return render(request, 'add_to_playlist_result.html', {'success': True, 'song_title': song_title, 'playlist_title': playlist_title, 'song_id': id_song, 'playlist_id': id_user_playlist})

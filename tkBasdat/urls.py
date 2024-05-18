@@ -17,12 +17,11 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from marmut import views as marmut_views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('marmut/', include('marmut.urls')),
-    path('biru/', include('biru.urls')),
+    path('', include('marmut.urls')),
+    path('', include('biru.urls')),
     path('', include('hijau.urls')),
 ]
