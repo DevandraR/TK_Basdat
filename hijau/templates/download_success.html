@@ -1,0 +1,21 @@
+<!-- download_success.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-5">
+                <div class="card-header bg-success text-light text-center">
+                    <h3 class="card-title">Download Successful</h3>
+                </div>
+                <div class="card-body">
+                    <p>Berhasil mengunduh Lagu dengan judul {{ song.judul }}!</p>
+                    <a href="#" class="btn btn-primary">Downloaded Song</a>
+                    <a href="{% url 'song_detail' song.id_song %}" class="btn btn-secondary">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

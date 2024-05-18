@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+
 {% block content %}
 <div class="container mt-5 mb-5">
     <div class="row justify-content-center">
@@ -24,6 +25,9 @@
                         <button type="submit" class="btn btn-primary" id="playButton">Play</button>
                     </form>                    
                     <a href="songtoplaylist.html" class="btn btn-secondary">Add to Playlist</a>
+                    {% if request.session.user_type.is_premium %}
+                        <a href="{% url 'download_song' song.id_song %}" class="btn btn-primary">Download</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
