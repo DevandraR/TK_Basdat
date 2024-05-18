@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add Song
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-5">
+                <div class="card-header bg-success text-light text-center">
+                    <h3 class="card-title">Add Song</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="song">Song:</label>
+                            <select class="form-control" id="song" name="song">
+                                {% for song in songs %}
+                                <option value="{{ song.id_konten }}">{{ song.judul }} - {{ song.artist }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-warning">Submit</button>
+                    </form>
+                    {% if error %}
+                    <p class="text-danger">{{ error }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

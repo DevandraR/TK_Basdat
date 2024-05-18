@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-5">
+                <div class="card-header bg-success text-light text-center">
+                    <h3 class="card-title">Song Detail</h3>
+                </div>
+                <div class="card-body">
+                    <p>Judul: {{ song.judul }}</p>
+                    <p>Genre(s): {% for genre in song.genres %}-{{ genre }} {% endfor %}</p>
+                    <p>Artist: {{ song.artist }}</p>
+                    <p>Songwriter(s): {% for songwriter in song.songwriters %}-{{ songwriter }} {% endfor %}</p>
+                    <p>Durasi: {{ song.durasi }} menit</p>
+                    <p>Tanggal Rilis: {{ song.tanggal_rilis }}</p>
+                    <p>Tahun: {{ song.tahun }}</p>
+                    <p>Total Play: {{ song.total_play }}</p>
+                    <p>Album: {{ song.album }}</p>
+                    <form method="POST" action="{% url 'play_song' song.id_song %}">
+                        {% csrf_token %}
+                        <input type="range" class="slider" id="progressSlider" name="progress" min="0" max="100" value="0">
+                        <button type="submit" class="btn btn-primary" id="playButton">Play</button>
+                    </form>                    
+                    <a href="songtoplaylist.html" class="btn btn-secondary">Add to Playlist</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

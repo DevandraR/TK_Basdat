@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                <div class="card-header bg-success text-light text-center">
+                    <h3 class="card-title">Dashboard</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Profile</h5>
+                    <p><strong>Name:</strong> {{ user_profile.2 }}</p> <!-- Change the field index based on your database schema -->
+                    <p><strong>Email:</strong> {{ user_profile.0 }}</p> <!-- Change the field index based on your database schema -->
+                    <!-- Add these fields for Labels -->
+                    {% if user_type.is_label %}
+                    <p><strong>Contact:</strong> {{ user_profile.3 }}</p> <!-- Change the field index based on your database schema -->
+                    {% endif %}
+                    <!-- Add these fields for Users -->
+                    {% if user_type.is_premium or user_type.is_non_premium %}
+                    <p><strong>City of Origin:</strong> {{ user_profile.7 }}</p> <!-- Change the field index based on your database schema -->
+                    <p><strong>Gender:</strong> {% if user_profile.3 == 1 %}Male{% else %}Female{% endif %}</p>
+                    <p><strong>Place of Birth:</strong> {{ user_profile.4 }}</p> <!-- Change the field index based on your database schema -->
+                    <p><strong>Date of Birth:</strong> {{ user_profile.5 }}</p> <!-- Change the field index based on your database schema -->
+                    <p><strong>Role:</strong> 
+                        {% if user_type.is_podcaster %}Podcaster{% endif %}
+                        {% if user_type.is_artist %}{% if user_type.is_podcaster %}, {% endif %}Artist{% endif %}
+                        {% if user_type.is_songwriter %}{% if user_type.is_artist or user_type.is_podcaster %}, {% endif %}Songwriter{% endif %}
+                        {% if user_type.is_label %}{% if user_type.is_artist or user_type.is_podcaster or user_type.is_songwriter %}, {% endif %}Label{% endif %}
+                        {% if user_type.is_non_premium %}{% if user_type.is_artist or user_type.is_podcaster or user_type.is_songwriter or user_type.is_label %}, {% endif %}Non-Premium{% endif %}
+                    </p>
+                    {% endif %}
+                    <!-- Add these sections based on the user's role -->
+                    {% if user_type.is_premium or user_type.is_non_premium %}
+                    <h5 class="card-title">Playlists</h5>
+                    {% if user_data.playlists %}
+                    {% for playlist in user_data.playlists %}
+                    <p>{{ playlist }}</p>
+                    {% endfor %}
+                    {% else %}
+                    <p>Belum Memiliki Playlist</p>
+                    {% endif %}
+                    {% endif %}
+
+                    {% if user_type.is_artist or user_type.is_songwriter %}
+                    <h5 class="card-title">Songs</h5>
+                    {% if user_data.songs %}
+                    {% for song in user_data.songs %}
+                    <p>{{ song }}</p>
+                    {% endfor %}
+                    {% else %}
+                    <p>Belum Memiliki Lagu</p>
+                    {% endif %}
+                    {% endif %}
+
+                    {% if user_type.is_podcaster %}
+                    <h5 class="card-title">Podcasts</h5>
+                    {% if user_data.podcasts %}
+                    {% for podcast in user_data.podcasts %}
+                    <p>{{ podcast }}</p>
+                    {% endfor %}
+                    {% else %}
+                    <p>Belum Memiliki Podcast</p>
+                    {% endif %}
+                    {% endif %}
+
+                    {% if user_type.is_label %}
+                    <h5 class="card-title">Albums</h5>
+                    {% if user_data.albums %}
+                    {% for album in user_data.albums %}
+                    <p>{{ album }}</p>
+                    {% endfor %}
+                    {% else %}
+                    <p>Belum Memproduksi Album</p>
+                    {% endif %}
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

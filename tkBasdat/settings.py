@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-c^(qsr6gvzk_5%-08ez=84!+k0o2iy5q2otzro8r@==3)x_7c%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', '.vercel.app']
 
 # Application definition
 
@@ -60,7 +60,7 @@ ROOT_URLCONF = 'tkBasdat.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'biru/templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

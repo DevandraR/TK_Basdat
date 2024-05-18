@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="d-flex flex-column bg-light" style="height: 100%;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-success">
+        <a class="navbar-brand text-white" href="#">Marmut</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon " style="filter: invert(100%);"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                {% if request.session.user_email %}
+                    <!-- Navbar for logged in users -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Dashboard</a>
+                    </li>
+                    {% if request.session.user_type.is_podcaster or request.session.user_type.is_artist or request.session.user_type.is_songwriter or request.session.user_type.is_non_premium %}
+                        <!-- Navbar for podcasters, artists, songwriters, and non-premium users -->
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Chart</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="">Playlist</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Subscribe</a>
+                        </li>
+                    {% endif %}
+                    {% if request.session.user_type.is_premium %}
+                        <!-- Navbar for premium users -->
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Downloaded Song</a>
+                        </li>
+                    {% endif %}
+                    {% if request.session.user_type.is_podcaster %}
+                        <!-- Navbar for podcasters -->
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Podcast</a>
+                        </li>
+                    {% endif %}
+                    {% if request.session.user_type.is_artist or request.session.user_type.is_songwriter %}
+                        <!-- Navbar for artists and songwriters -->
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Album & Songs</a>
+                        </li>
+                    {% endif %}
+                    {% if request.session.user_type.is_label %}
+                        <!-- Navbar for labels -->
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Album</a>
+                        </li>
+                    {% endif %}
+                    {% if request.session.user_type.is_artist or request.session.user_type.is_songwriter or request.session.user_type.is_label %}
+                        <!-- Navbar for artists, songwriters, and labels -->
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Royalty</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'logout' %}">Logout</a>
+                    </li>                    
+                {% else %}
+                    <!-- Navbar for guests -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'register' %}">Register</a>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <footer class="footer mt-auto py-3 bg-success">
+        <div class="container-fluid">
+            <span class="text-white">© 2024 Marmut. All rights reserved.</span>
+        </div>
+    </footer>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
