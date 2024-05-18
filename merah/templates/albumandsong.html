@@ -93,7 +93,11 @@
                                         <td>{{ row.total_durasi }}</td>
                                         <td>
                                             <a href="/merah/album-detail/{{ row.album_id }}" class="btn btn-primary">Lihat Daftar Lagu</a>
-                                            <button class="btn btn-danger">Hapus</button>
+                                            <form method="post" action="/merah/kelola-album/">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="album_id" value="{{ row.album_id }}">
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 {% endfor %}

@@ -69,7 +69,7 @@ def album_detail(request, album_id):
 
             return render(request, 'albumdetail.html', {'album_detail': album})
     return render(request, 'albumdetail.html', {'album_detail': album})
-    
+
 @csrf_exempt
 def kelola_album_and_song(request):
     email = request.session.get('user_email')
@@ -105,6 +105,17 @@ def kelola_album_and_song(request):
                     'total_durasi': format(int(row[2]),',').replace(',', '.'),
                     'album_id':row[3],
                 })
+
+            if request.method == 'POST':
+                album_id = request.POST.get('album_id')
+                cursor.execute("""
+                                DELETE FROM 
+                                    marmut.album
+                                WHERE 
+                                    id = %s
+                               """, [album_id])
+                return redirect('/merah/kelola-album/')
+            
             return render(request, 'albumandsong.html', {'result': result})
     
     return render(request, 'albumandsong.html')
