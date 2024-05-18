@@ -41,7 +41,8 @@ def album_detail(request, album_id):
                                 k.judul AS Judul_Lagu,
                                 k.durasi AS Durasi,
                                 s.total_play AS Total_Play,
-                                s.total_download AS Total_Download
+                                s.total_download AS Total_Download,
+                                s.id_konten AS song_id
                             FROM 
                                 marmut.song s
                             JOIN 
@@ -63,6 +64,7 @@ def album_detail(request, album_id):
                     'durasi': result[1],
                     'total_play': format(int(result[2]), ',').replace(',', '.'),
                     'total_download': format(int(result[3]), ',').replace(',', '.'),
+                    'song_id': result[4],
                 })
 
             return render(request, 'albumdetail.html', {'album_detail': album})
