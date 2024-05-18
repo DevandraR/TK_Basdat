@@ -39,11 +39,18 @@ def login(request):
         password = request.POST['password']
 
         with connection.cursor() as cursor:
+            # Check the 'akun' table
             cursor.execute("SELECT * FROM marmut.akun WHERE email = %s AND password = %s", [email, password])
             user = cursor.fetchone()
 
+            # If not found in 'akun', check the 'label' table
+            if user is None:
+                cursor.execute("SELECT * FROM marmut.label WHERE email = %s AND password = %s", [email, password])
+                user = cursor.fetchone()
+
             if user is not None:
-                request.session['user_email'] = user[0]
+                # Convert the UUID to a string before storing it in the session
+                request.session['user_email'] = str(user[0])
                 request.session['user_type'] = determine_user_type(email, cursor)
                 return redirect('dashboard')
             else:

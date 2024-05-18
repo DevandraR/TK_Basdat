@@ -23,6 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('marmut.urls')),
     path('', include('hijau.urls')),
-    path('', include('kuning.urls')),
 
 ]
