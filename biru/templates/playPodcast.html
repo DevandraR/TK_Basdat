@@ -12,22 +12,26 @@
   <h2>PODCAST DETAIL</h2>
   <div class="card mb-3">
     <div class="card-body">
-      <h5 class="card-title">Judul: {{ podcast.judul }}</h5>
+      <h5 class="card-title">Judul: {{ podcast.0 }}</h5>
       <p class="card-text">Genre(s): <br>
-      {% for genre in podcast.genre %}
+      {% for genre in podcast.1 %}
         - {{ genre }} <br>
       {% endfor %}
       </p>
-      <!-- ... -->
-      {% for episode in episodes %}
-        <tr>
-          <td>{{ episode.judul }}</td>
-          <td>{{ episode.deskripsi }}</td>
-          <td>{{ episode.durasi }}</td>
-          <td>{{ episode.tanggal_rilis }}</td>
-        </tr>
-      {% endfor %}
+      <p>Host: {{ podcast.2 }}</p>
+      <p>Duration: {{ podcast.3 }} minutes</p>
+      <p>Release Date: {{ podcast.4 }}</p>
+      <p>Year: {{ podcast.5 }}</p>
     </div>
+    <div style="text-align: center;">
+      <button class="btn btn-primary" onclick="goBack()">Go Back</button>
+    </div>
+    
+    <script>
+    function goBack() {
+      window.history.back();
+    }
+  </script>
   </div>
 
   <h2>DAFTAR EPISODE</h2>
@@ -41,18 +45,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>SubJudul1</td>
-        <td>Lorem Ipsum ...</td>
-        <td>59 menit</td>
-        <td>18/03/2024</td>
-      </tr>
-      <tr>
-        <td>SubJudul2</td>
-        <td>Lorem Ipsum ...</td>
-        <td>1 jam 2 menit</td>
-        <td>25/03/2024</td>
-      </tr>
+      {% for episode in episodes %}
+        <tr>
+          <td>{{ episode.0 }}</td>
+          <td>{{ episode.1 }}</td>
+          <td>{{ episode.2 }} menit</td>
+          <td>{{ episode.3 }}</td>
+        </tr>
+      {% endfor %}
       <!-- Add more rows for additional episodes -->
     </tbody>
   </table>

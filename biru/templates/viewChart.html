@@ -18,36 +18,47 @@
       </tr>
     </thead>
     <tbody>
+      {% for chart_type in chart_types %}
       <tr>
-        <td>Daily Top 20</td>
-        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyTopModal">Lihat Daftar Lagu</button></td>
+        <td>{{ chart_type.0 }}</td>
+        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#{{ chart_type.0|slugify }}Modal">Lihat Daftar Lagu</button></td>
       </tr>
-      <tr>
-        <td>Weekly Top 20</td>
-        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#weeklyTopModal">Lihat Daftar Lagu</button></td>
-      </tr>
-      <!-- Add more rows for additional chart types -->
+      {% endfor %}
     </tbody>
   </table>
-
-  <a href="#" class="btn btn-primary">Kembali</a>
 </div>
 
-<!-- Daily Top Modal -->
-<div class="modal fade" id="dailyTopModal" tabindex="-1" role="dialog" aria-labelledby="dailyTopModalLabel" aria-hidden="true">
+{% for chart_type, songs in chart_details.items %}
+<div class="modal fade" id="{{ chart_type.0|slugify }}Modal" tabindex="-1" role="dialog" aria-labelledby="{{ chart_type.0|slugify }}ModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="dailyTopModalLabel">Daily Top 20</h5>
+        <h5 class="modal-title" id="{{ chart_type.0|slugify }}ModalLabel">{{ chart_type.0 }}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <!-- Insert daily top songs here -->
-        <p>Song1 by Artist1</p>
-        <p>Song2 by Artist2</p>
-        <!-- Add more songs as needed -->
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Judul Lagu</th>
+              <th>Oleh</th>
+              <th>Tanggal Rilis</th>
+              <th>Total Plays</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for song in songs %}
+            <tr>
+              <td>{{ song.0 }}</td>
+              <td>{{ song.1 }}</td>
+              <td>{{ song.2 }}</td>
+              <td>{{ song.3 }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -55,29 +66,7 @@
     </div>
   </div>
 </div>
-
-<!-- Weekly Top Modal -->
-<div class="modal fade" id="weeklyTopModal" tabindex="-1" role="dialog" aria-labelledby="weeklyTopModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="weeklyTopModalLabel">Weekly Top 20</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Insert weekly top songs here -->
-        <p>Song3 by Artist3</p>
-        <p>Song4 by Artist4</p>
-        <!-- Add more songs as needed -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+{% endfor %}
 
 <!-- Bootstrap JavaScript -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
