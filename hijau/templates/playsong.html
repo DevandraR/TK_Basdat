@@ -26,8 +26,9 @@
                     </form>                    
                     <a href="songtoplaylist.html" class="btn btn-secondary">Add to Playlist</a>
                     {% if request.session.user_type.is_premium %}
-                        <a href="{% url 'download_song' song.id_song %}" class="btn btn-primary">Download</a>
+                        <a href="{% url 'download_song' song.id_song %}" class="btn btn-success">Download</a>
                     {% endif %}
+                    <a href="javascript:history.back()" class="btn btn-warning">Back</a>
                 </div>
             </div>
         </div>
