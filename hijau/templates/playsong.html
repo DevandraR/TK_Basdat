@@ -24,7 +24,9 @@
                         <input type="range" class="slider" id="progressSlider" name="progress" min="0" max="100" value="0">
                         <button type="submit" class="btn btn-primary" id="playButton">Play</button>
                     </form>                    
-                    <a href="songtoplaylist.html" class="btn btn-secondary">Add to Playlist</a>
+                    <form method="GET" action="{% url 'add_to_playlist' song.id_song %}">
+                        <button type="submit" class="btn btn-secondary">Add to Playlist</button>
+                    </form>
                     {% if request.session.user_type.is_premium %}
                         <a href="{% url 'download_song' song.id_song %}" class="btn btn-success">Download</a>
                     {% endif %}

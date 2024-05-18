@@ -12,4 +12,6 @@ urlpatterns = [
     path('song/<uuid:id_song>/', views.song_detail, name='song_detail'),
     path('song/<uuid:id_song>/play/', views.play_song, name='play_song'),
     path('song/<uuid:id_song>/download/', views.download_song, name='download_song'),
+    path('song/<uuid:id_song>/add_to_playlist/', views.add_to_playlist, name='add_to_playlist'),
+    path('song/<uuid:id_song>/add_to_playlist/submit/', views.submit_add_to_playlist, name='submit_add_to_playlist'),
 ]
