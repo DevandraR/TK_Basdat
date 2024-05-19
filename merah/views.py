@@ -1,3 +1,4 @@
+from datetime import date
 import uuid
 from django.db import connection
 from django.shortcuts import redirect, render
@@ -7,15 +8,144 @@ from marmut.views import determine_user_type
 
 def list_album(request):
     user_type = request.session.get('user_type')
+    user_email = request.session.get('user_email')
+
     if user_type is not None:
         if user_type['is_artist'] or user_type['is_songwriter']:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT 
+                        a.judul AS album_title, 
+                        l.nama AS label_name, 
+                        a.jumlah_lagu AS song_count, 
+                        a.total_durasi AS total_duration,
+                        a.id AS album_id
+                    FROM 
+                        marmut.album a
+                    INNER JOIN 
+                        marmut.label l ON a.id_label = l.id
+                    INNER JOIN
+                        marmut.song s ON a.id = s.id_album
+                    INNER JOIN
+                        marmut.artist ar ON s.id_artist = ar.id
+                    WHERE 
+                        ar.email_akun = %s
+                """, [user_email])
+                rows = cursor.fetchall()
 
+            # Convert rows to a list of dictionaries
+            albums = [{'album_title': row[0], 'label_name': row[1], 'song_count': row[2], 'total_duration': row[3], 'album_id': row[4]} for row in rows]
 
-            return render(request, 'album.html')
+            return render(request, 'album.html', {'albums': albums})
         else:
             return render(request, 'forbidden.html')
     else:
         return render(request, 'forbidden.html')
+
+@csrf_exempt
+def create_album(request):
+    user_type = request.session.get('user_type')
+    user_email = request.session.get('user_email')
+
+    # Check user type and permissions
+    if user_type is None or not (user_type.get('is_artist') or user_type.get('is_songwriter')):
+        return render(request, 'forbidden.html')
+
+    if request.method == 'POST':
+        current_date = date.today() 
+        
+        # Extract form data
+        album_title = request.POST.get('album_title')
+        label = request.POST.get('label')
+        song_title = request.POST.get('song_title')
+        artist = request.POST.get('artist')
+        songwriters = request.POST.getlist('songwriter')
+        genres = request.POST.getlist('genre')
+        duration = int(request.POST.get('duration'))  # Convert duration to int
+
+        # Generate UUIDs
+        album_id = uuid.uuid4()
+        song_id = uuid.uuid4()
+
+        # Save the data to the database
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                INSERT INTO marmut.album (id, judul, id_label, jumlah_lagu, total_durasi)
+                VALUES (%s, %s, %s, 1, %s)
+            """, [str(album_id), album_title, label, duration])
+
+            cursor.execute("""
+            INSERT INTO marmut.konten (id, judul, tanggal_rilis, tahun, durasi)
+            VALUES (%s, %s, %s, %s, %s)
+            """, [str(song_id), song_title, current_date, current_date.year, duration])
+
+            cursor.execute("""
+                INSERT INTO marmut.song (id_konten, id_artist, id_album)
+                VALUES (%s, %s, %s)
+            """, [str(song_id), artist, str(album_id)])
+
+            for songwriter in songwriters:
+                cursor.execute("""
+                    INSERT INTO marmut.songwriter_write_song (id_songwriter, id_song)
+                    VALUES (%s, %s)
+                """, [songwriter, str(song_id)])
+
+            for genre in genres:
+                cursor.execute("""
+                    INSERT INTO marmut.genre (id_konten, genre)
+                    VALUES (%s, %s)
+                """, [str(song_id), genre])
+
+            # Update jumlah_lagu and total_durasi in album
+            # Update jumlah_lagu in album
+            cursor.execute("""
+                UPDATE marmut.album
+                SET jumlah_lagu = jumlah_lagu
+                WHERE id = %s
+            """, [str(album_id)])
+
+
+        # Redirect to the album list page after successful form submission
+        return redirect('/merah/list-album/')
+
+    elif request.method == 'GET':
+        with connection.cursor() as cursor:
+            # Get labels
+            cursor.execute("SELECT id, nama FROM marmut.label")
+            labels = cursor.fetchall()
+
+            # Get artists
+            if user_type.get('is_artist'):
+                cursor.execute("SELECT id, email_akun FROM marmut.artist WHERE email_akun = %s", [user_email])
+            else:  # if user is a songwriter
+                cursor.execute("SELECT id, email_akun FROM marmut.artist")
+            artists = cursor.fetchall()
+
+            # Get songwriters
+            cursor.execute("SELECT id, email_akun FROM marmut.songwriter")
+            songwriters = cursor.fetchall()
+
+            # Get genres
+            cursor.execute("SELECT DISTINCT genre FROM marmut.genre")
+            genres = cursor.fetchall()
+
+        return render(request, 'createalbum.html', {
+            'labels': labels,
+            'artists': artists,
+            'songwriters': songwriters,
+            'genres': genres,
+        })
+
+
+def delete_album(request, album_id):
+    if request.method == 'POST':
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                DELETE FROM marmut.album
+                WHERE id = %s
+            """, [album_id])
+
+        return redirect('/merah/list-album/')
 
 def album_and_song(request):
     user_type = request.session.get('user_type')
