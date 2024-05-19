@@ -8,7 +8,7 @@
 </head>
 <body class="d-flex flex-column bg-light" style="height: 100%;">
     <nav class="navbar navbar-expand-lg navbar-light bg-success">
-        <a class="navbar-brand text-white" href="#">Marmut</a>
+        <a class="navbar-brand text-white" href="{% url 'homepage' %}">Marmut</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon " style="filter: invert(100%);"></span>
         </button>
@@ -17,7 +17,7 @@
                 {% if request.session.user_email %}
                     <!-- Navbar for logged in users -->
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Dashboard</a>
+                        <a class="nav-link text-white" href="{% url 'dashboard' %}">Dashboard</a>
                     </li>
                     {% if request.session.user_type.is_podcaster or request.session.user_type.is_artist or request.session.user_type.is_songwriter or request.session.user_type.is_non_premium %}
                         <!-- Navbar for podcasters, artists, songwriters, and non-premium users -->
@@ -25,13 +25,19 @@
                             <a class="nav-link text-white" href="#">Chart</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="#">Playlist</a>
+                            <a class="nav-link text-white" href="{% url 'playlist' %}">Playlist</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#">Subscribe</a>
                         </li>
                     {% endif %}
                     {% if request.session.user_type.is_premium %}
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Chart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'playlist' %}">Playlist</a>
+                    </li>
                         <!-- Navbar for premium users -->
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#">Downloaded Song</a>
