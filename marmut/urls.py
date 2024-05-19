@@ -9,5 +9,7 @@ urlpatterns = [
     path('downloadedsongs/', views.downloaded_songs, name='downloadedsongs'),
     path('downloadedsong/', views.downloaded_songs, name='downloadedsongs'),
     path('searchfind/', views.search_find, name='searchfind'),
-
+    path('riwayat/', views.riwayat, name='riwayat'),
+    path('deletesong/<uuid:song_id>/', views.delete_song, name='delete_song'), 
 ]
+
