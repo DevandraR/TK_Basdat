@@ -14,27 +14,21 @@ Dashboard
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">Profile</h5>
-                    <p><strong>Name:</strong> {{ user_profile.2 }}</p> <!-- Change the field index based on your database schema -->
-                    <p><strong>Email:</strong> {{ user_profile.0 }}</p> <!-- Change the field index based on your database schema -->
-                    <!-- Add these fields for Labels -->
+                    <p><strong>Name:</strong> {{ user_profile.2 }}</p>
+                    <p><strong>Email:</strong> {{ user_profile.0 }}</p>
+
                     {% if user_type.is_label %}
-                    <p><strong>Contact:</strong> {{ user_profile.3 }}</p> <!-- Change the field index based on your database schema -->
+                    <p><strong>Contact:</strong> {{ user_profile.3 }}</p>
                     {% endif %}
-                    <!-- Add these fields for Users -->
+
                     {% if user_type.is_premium or user_type.is_non_premium %}
-                    <p><strong>City of Origin:</strong> {{ user_profile.7 }}</p> <!-- Change the field index based on your database schema -->
+                    <p><strong>City of Origin:</strong> {{ user_profile.7 }}</p>
                     <p><strong>Gender:</strong> {% if user_profile.3 == 1 %}Male{% else %}Female{% endif %}</p>
-                    <p><strong>Place of Birth:</strong> {{ user_profile.4 }}</p> <!-- Change the field index based on your database schema -->
-                    <p><strong>Date of Birth:</strong> {{ user_profile.5 }}</p> <!-- Change the field index based on your database schema -->
-                    <p><strong>Role:</strong> 
-                        {% if user_type.is_podcaster %}Podcaster{% endif %}
-                        {% if user_type.is_artist %}{% if user_type.is_podcaster %}, {% endif %}Artist{% endif %}
-                        {% if user_type.is_songwriter %}{% if user_type.is_artist or user_type.is_podcaster %}, {% endif %}Songwriter{% endif %}
-                        {% if user_type.is_label %}{% if user_type.is_artist or user_type.is_podcaster or user_type.is_songwriter %}, {% endif %}Label{% endif %}
-                        {% if user_type.is_non_premium %}{% if user_type.is_artist or user_type.is_podcaster or user_type.is_songwriter or user_type.is_label %}, {% endif %}Non-Premium{% endif %}
-                    </p>
+                    <p><strong>Place of Birth:</strong> {{ user_profile.4 }}</p>
+                    <p><strong>Date of Birth:</strong> {{ user_profile.5 }}</p>
+                    <p><strong>Role:</strong> {{ user_profile_roles }}</p>
                     {% endif %}
-                    <!-- Add these sections based on the user's role -->
+
                     {% if user_type.is_premium or user_type.is_non_premium %}
                     <h5 class="card-title">Playlists</h5>
                     {% if user_data.playlists %}
@@ -78,7 +72,6 @@ Dashboard
                     <p>Belum Memproduksi Album</p>
                     {% endif %}
                     {% endif %}
-
                 </div>
             </div>
         </div>
