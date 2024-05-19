@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Homepage
+Album
 {% endblock %}
 
 {% block content %}
@@ -32,7 +32,7 @@ Homepage
                                     <td>{{ album.total_duration }} menit</td>
                                     <td>
                                         <a href="/merah/album-detail/{{ album.album_id }}/" class="btn btn-primary">Lihat Daftar Lagu</a>
-                                        <a href="/merah/create-lagu" class="btn btn-secondary">Tambah Lagu</a>
+                                        <a href="/merah/create-song/{{ album.album_id }}/" class="btn btn-secondary">Tambah Lagu</a>
                                         <form action="/merah/delete-album/{{ album.album_id }}" method="post" style="display: inline;">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-danger">Hapus</button>

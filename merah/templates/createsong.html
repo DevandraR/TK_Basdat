@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Create Lagu
+{% endblock %}
+
+
+{% block content %}
+    <div class="container mt-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card mt-5">
+                    <div class="card-header bg-success text-light text-center">
+                        <h3 class="card-title">Create Lagu</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="album">Album:</label>
+                                <input type="text" class="form-control" id="album" name="album" value="{{ album_title }}" readonly>
+                            </div>                            
+                            <div class="form-group">
+                                <label for="title">Judul:</label>
+                                <input type="text" class="form-control" id="title" name="song_title" placeholder="Enter song title">
+                            </div>
+                            <div class="form-group">
+                                <label for="artist">Artist:</label>
+                                <select class="form-control" id="artist" name="artist">
+                                    <!-- Option values will be filled with the list of artists on the Marmut platform -->
+                                    {% for artist in artists %}
+                                        <option value="{{ artist.id }}">{{ artist.email_akun }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="songwriter">Songwriter:</label>
+                                <select multiple class="form-control" id="songwriter" name="songwriter">
+                                    <!-- Option values will be filled with the list of songwriters on the Marmut platform -->
+                                    {% for songwriter in songwriters %}
+                                        <option value="{{ songwriter.id }}">{{ songwriter.email_akun }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="genre">Genre:</label>
+                                <select multiple class="form-control" id="genre" name="genre">
+                                    <!-- Option values will be filled with the list of genres on the Marmut platform -->
+                                    {% for genre in genres %}
+                                        <option value="{{ genre }}">{{ genre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="duration">Durasi:</label>
+                                <input type="text" class="form-control" id="duration" name="duration" placeholder="Enter duration">
+                            </div>
+                            <button type="submit" class="btn btn-warning">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
