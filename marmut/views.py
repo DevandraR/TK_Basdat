@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.db import connection
+from django.db import IntegrityError, connection, transaction
 import uuid
 
 def determine_user_type(email, cursor):
@@ -148,37 +148,45 @@ def register_user(request):
 
             if user is not None:
                 messages.error(request, 'Email already exists!')
-                return redirect('register')
+                return render(request, 'register.html')
 
-            # Insert into akun table
-            cursor.execute("INSERT INTO marmut.akun (email, password, nama, gender, tempat_lahir, tanggal_lahir, is_verified, kota_asal) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", [email, password, name, gender, birthplace, birthdate, len(role) > 0, city])
+            try:
+                with transaction.atomic():
+                    # Insert into akun table
+                    cursor.execute("""
+                        INSERT INTO marmut.akun (email, password, nama, gender, tempat_lahir, tanggal_lahir, is_verified, kota_asal) 
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                    """, [email, password, name, gender, birthplace, birthdate, len(role) > 0, city])
 
-            # Generate a UUID for the id field
-            id = uuid.uuid4()
-            # Generate a UUID for the id_pemilik_hak_cipta field
-            id_pemilik_hak_cipta = uuid.uuid4()
+                    # Insert into role table
+                    for r in role:
+                        if r == 'Podcaster':
+                            cursor.execute("INSERT INTO marmut.podcaster (email) VALUES (%s)", [email])
+                        elif r == 'Artist':
+                            # Generate a new UUID for each pemilik_hak_cipta
+                            id_pemilik_hak_cipta_artist = uuid.uuid4()
+                            # Insert into pemilik_hak_cipta table
+                            cursor.execute("INSERT INTO marmut.pemilik_hak_cipta (id, rate_royalti) VALUES (%s, %s)", [id_pemilik_hak_cipta_artist, 0])
+                            # Insert into artist table
+                            cursor.execute("INSERT INTO marmut.artist (id, email_akun, id_pemilik_hak_cipta) VALUES (%s, %s, %s)", [uuid.uuid4(), email, id_pemilik_hak_cipta_artist])
+                        elif r == 'Songwriter':
+                            # Generate a new UUID for each pemilik_hak_cipta
+                            id_pemilik_hak_cipta_songwriter = uuid.uuid4()
+                            # Insert into pemilik_hak_cipta table
+                            cursor.execute("INSERT INTO marmut.pemilik_hak_cipta (id, rate_royalti) VALUES (%s, %s)", [id_pemilik_hak_cipta_songwriter, 0])
+                            # Insert into songwriter table
+                            cursor.execute("INSERT INTO marmut.songwriter (id, email_akun, id_pemilik_hak_cipta) VALUES (%s, %s, %s)", [uuid.uuid4(), email, id_pemilik_hak_cipta_songwriter])
 
-            # Insert into role table
-            for r in role:
-                if r == 'Podcaster':
-                    cursor.execute("INSERT INTO marmut.podcaster (email) VALUES (%s)", [email])
-                elif r == 'Artist':
-                    # Insert into pemilik_hak_cipta table
-                    cursor.execute("INSERT INTO marmut.pemilik_hak_cipta (id, rate_royalti) VALUES (%s, %s)", [id_pemilik_hak_cipta, 0])
-                    # Insert into artist table
-                    cursor.execute("INSERT INTO marmut.artist (id, email_akun, id_pemilik_hak_cipta) VALUES (%s, %s, %s)", [id, email, id_pemilik_hak_cipta])
-                elif r == 'Songwriter':
-                    # Insert into pemilik_hak_cipta table
-                    cursor.execute("INSERT INTO marmut.pemilik_hak_cipta (id, rate_royalti) VALUES (%s, %s)", [id_pemilik_hak_cipta, 0])
-                    # Insert into songwriter table
-                    cursor.execute("INSERT INTO marmut.songwriter (id, email_akun, id_pemilik_hak_cipta) VALUES (%s, %s, %s)", [id, email, id_pemilik_hak_cipta])
+                    # If no role is selected, the user is a non-premium user
+                    if len(role) == 0:
+                        cursor.execute("INSERT INTO marmut.non_premium (email) VALUES (%s)", [email])
 
-            # If no role is selected, the user is a non-premium user
-            if len(role) == 0:
-                cursor.execute("INSERT INTO marmut.non_premium (email) VALUES (%s)", [email])
+                messages.success(request, 'Registration successful!')
+                return render(request, 'register.html')
 
-            messages.success(request, 'Registration successful!')
-            return redirect('login')
+            except IntegrityError as e:
+                messages.error(request, f'An error occurred during registration: {e}')
+                return render(request, 'register.html')
 
     else:
         return redirect('register')
@@ -197,8 +205,8 @@ def register_label(request):
             return redirect('register')
 
         with connection.cursor() as cursor:
-            # Check if email already exists
-            cursor.execute("SELECT email FROM marmut.akun WHERE email = %s", [email])
+            # Check if email already exists in 'akun' or 'label' table
+            cursor.execute("SELECT email FROM marmut.akun WHERE email = %s UNION SELECT email FROM marmut.label WHERE email = %s", [email, email])
             user = cursor.fetchone()
 
             if user is not None:

@@ -71,7 +71,6 @@ def detail_playlist(request, id_user_playlist):
 
     return render(request, 'detail_playlist.html', {'playlist': playlist, 'songs': songs})
 
-
 def shuffle_play(request, id_user_playlist):
     if request.method == 'POST':
         timestamp = datetime.now()
