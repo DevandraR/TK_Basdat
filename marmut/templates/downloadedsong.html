@@ -14,14 +14,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <!-- <li class="nav-item">
-                    <a class="nav-link text-white" href="register.html">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="login.html">Login</a>
-                </li> -->
-
-                <!-- These links are only visible to logged in users -->
+                <!-- Links for logged in users -->
                 <li class="nav-item">
                     <a class="nav-link text-white" href="dashboard.html">Dashboard</a>
                 </li>
@@ -31,27 +24,10 @@
                 <li class="nav-item">
                     <a class="nav-link text-white" href="userplaylist.html">Playlist</a>
                 </li>
-                <!-- <li class="nav-item">
-                    <a class="nav-link text-white" href="subscribe.html">Subscribe</a>
-                </li> -->
                 <li class="nav-item">
                     <a class="nav-link text-white" href="downloadedsong.html">Downloaded Song</a>
                 </li>
-                <!-- <li class="nav-item">
-                    <a class="nav-link text-white" href="podcast.html">Podcast</a>
-                </li> -->
-                <!-- <li class="nav-item">
-                    <a class="nav-link text-white" href="albumsong.html">Album & Songs</a>
-                </li> -->
-                <!-- <li class="nav-item">
-                    <a class="nav-link text-white" href="album.html">Album</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="royalty.html">Royalty</a>
-                </li>
-                <li class="nav-item"> -->
-                    <a class="nav-link text-white" href="#">Logout</a>
-                </li>
+                <a class="nav-link text-white" href="#">Logout</a>
             </ul>
         
             <!-- Search bar -->
@@ -65,7 +41,6 @@
                 </button>
             </form>
         </div>
-        
     </nav>
 
     <div class="container mt-5 mb-5">
@@ -88,16 +63,15 @@
                             <tbody>
                                 {% for song in downloaded_songs %}
                                 <tr>
-                                    <td>{{ song.1 }}</td> <!-- ID Song -->
-                                    <td>{{ song.2 }}</td> <!-- Email Downloader -->
-                                    <td class="download-date"></td> <!-- Download Date -->
+                                    <td>{{ song.1 }}</td>
+                                    <td>{{ song.2 }}</td>
+                                    <td class="download-date"></td>
                                     <td>
                                         <a href="playsong.html" class="btn btn-primary">Lihat</a>
-                                        <button class="btn btn-danger" onclick="deleteSong('{{ song.1 }}')">Hapus</button>
+                                        <a href="{% url 'marmut:delete_song' song.0 %}" class="btn btn-danger" role="button">Hapus</a>
                                     </td>
                                 </tr>
                                 {% endfor %}
-                                <!-- Add more rows as needed -->
                             </tbody>
                         </table>
                         <a href="previousPage.html" class="btn btn-secondary">Kembali</a>
@@ -106,7 +80,7 @@
             </div>
         </div>
     </div>
-    
+
     <script>
         function deleteSong(songTitle) {
             // Delete the song from the list of downloaded songs
@@ -117,13 +91,11 @@
         document.addEventListener("DOMContentLoaded", function() {
             var currentDate = new Date();
             var day = currentDate.getDate();
-            var month = currentDate.getMonth() + 1; // Penambahan 1 karena bulan dimulai dari 0
+            var month = currentDate.getMonth() + 1;
             var year = currentDate.getFullYear();
 
-            // Format tanggal jika perlu
             var formattedDate = day + '-' + month + '-' + year;
 
-            // Menampilkan tanggal di elemen dengan kelas "download-date"
             var downloadDateElements = document.querySelectorAll('.download-date');
             downloadDateElements.forEach(function(element) {
                 element.textContent = formattedDate;
