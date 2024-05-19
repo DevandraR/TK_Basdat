@@ -40,6 +40,7 @@ def detail_playlist(request, id_user_playlist):
             email_pemain = request.session['user_email']  # Assuming the email is stored in session
             with connection.cursor() as cursor:
                 cursor.execute("INSERT INTO marmut.akun_play_song (email_pemain, id_song, waktu) VALUES (%s, %s, %s)", [email_pemain, id_song, timestamp])
+                cursor.execute("UPDATE marmut.song SET total_play = total_play + 1 WHERE id_konten = %s", [id_song])
         elif 'delete' in request.POST:
             id_song = request.POST['delete']
             with connection.cursor() as cursor:
@@ -71,6 +72,7 @@ def detail_playlist(request, id_user_playlist):
 
     return render(request, 'detail_playlist.html', {'playlist': playlist, 'songs': songs})
 
+
 def shuffle_play(request, id_user_playlist):
     if request.method == 'POST':
         timestamp = datetime.now()
@@ -89,6 +91,7 @@ def shuffle_play(request, id_user_playlist):
 
             for song in songs:
                 cursor.execute("INSERT INTO marmut.akun_play_song (email_pemain, id_song, waktu) VALUES (%s, %s, %s)", [email_pemain, song[0], timestamp])
+                cursor.execute("UPDATE marmut.song SET total_play = total_play + 1 WHERE id_konten = %s", [song[0]])
 
         return redirect(reverse('detail_playlist', args=[id_user_playlist]))
 
