@@ -91,17 +91,18 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <form>
+                        <form method="post">
+                            {% csrf_token %}
                             <div class="form-group">
                                 <label for="paymentMethod">Metode Pembayaran:</label>
-                                <select class="form-control" id="paymentMethod">
+                                <select class="form-control" id="paymentMethod" name="paymentMethod">
                                     <option value="transferBank">Transfer Bank</option>
                                     <option value="kartuKredit">Kartu Kredit</option>
                                     <option value="eWallet">E-Wallet</option>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-warning">Submit</button>
-                        </form>
+                        </form>                        
                     </div>
                 </div>
             </div>
