@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-5">
+                <div class="card-header bg-success text-light text-center">
+                    <h3 class="card-title">Add to Playlist</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{% url 'submit_add_to_playlist' song_id %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="playlist">Select Playlist:</label>
+                            <select class="form-control" id="playlist" name="playlist" required>
+                                {% for playlist in playlists %}
+                                    <option value="{{ playlist.id_user_playlist }}">{{ playlist.judul }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Tambah</button>
+                        <a href="{% url 'song_detail' song_id %}" class="btn btn-warning">Kembali</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

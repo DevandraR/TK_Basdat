@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Podcast Detail</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2>PODCAST DETAIL</h2>
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">Judul: {{ podcast.0 }}</h5>
+      <p class="card-text">Genre(s): <br>
+      {% for genre in podcast.1 %}
+        - {{ genre }} <br>
+      {% endfor %}
+      </p>
+      <p>Host: {{ podcast.2 }}</p>
+      <p>Duration: {{ podcast.3 }} minutes</p>
+      <p>Release Date: {{ podcast.4 }}</p>
+      <p>Year: {{ podcast.5 }}</p>
+    </div>
+    <div style="text-align: center;">
+      <button class="btn btn-primary" onclick="goBack()">Go Back</button>
+    </div>
+    
+    <script>
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+  </div>
+
+  <h2>DAFTAR EPISODE</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Judul Episode</th>
+        <th>Deskripsi</th>
+        <th>Durasi</th>
+        <th>Tanggal</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for episode in episodes %}
+        <tr>
+          <td>{{ episode.0 }}</td>
+          <td>{{ episode.1 }}</td>
+          <td>{{ episode.2 }} menit</td>
+          <td>{{ episode.3 }}</td>
+        </tr>
+      {% endfor %}
+      <!-- Add more rows for additional episodes -->
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

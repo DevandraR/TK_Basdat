@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marmut Podcast Management</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2>CREATE PODCAST</h2>
+  <form method="post" action="{% url 'create_podcast' %}">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="podcastTitle">Judul:</label>
+      <input type="text" class="form-control" id="podcastTitle" name="title">
+    </div>
+    <div class="form-group">
+      <label for="podcastGenre">Genre:</label>
+      <select id="podcastGenre" name="genre" multiple class="form-control">
+        <option>Genre1</option>
+        <!-- Add more genres as needed -->
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="podcastDuration">Durasi:</label>
+      <input type="text" class="form-control" id="podcastDuration" name="duration">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+  <h2>LIST PODCAST</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Judul</th>
+        <th>Jumlah Episode</th>
+        <th>Total Durasi</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for podcast in podcasts %}
+      <tr>
+        <td>{{ podcast.judul }}</td>
+        <td>{{ podcast.jumlah_episode }}</td>
+        <td>{{ podcast.total_durasi }}</td>
+        <td>
+          <a href="{% url 'delete_podcast' podcast.id %}" class="btn btn-danger">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Add similar forms and tables for Episode CRUD operations -->
+</div>
+
+</body>
+</html>

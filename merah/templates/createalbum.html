@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Buat Album
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card mt-5">
+                <div class="card-header bg-success text-light text-center">
+                    <h3 class="card-title">Buat Album</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="/merah/create-album">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="album_title">Judul Album:</label>
+                            <input type="text" class="form-control" id="album_title" name="album_title">
+                        </div>
+                        <div class="form-group">
+                            <label for="label">Label:</label>
+                            <select class="form-control" id="label" name="label">
+                                {% for label in labels %}
+                                <option value="{{ label.0 }}">{{ label.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="song_title">Judul Lagu:</label>
+                            <input type="text" class="form-control" id="song_title" name="song_title">
+                        </div>
+                        <div class="form-group">
+                            <label for="artist">Artist:</label>
+                            <select class="form-control" id="artist" name="artist">
+                                {% for artist in artists %}
+                                <option value="{{ artist.0 }}">{{ artist.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="songwriters">Songwriters:</label>
+                            <select multiple class="form-control" id="songwriters" name="songwriters">
+                                {% for songwriter in songwriters %}
+                                <option value="{{ songwriter.0 }}">{{ songwriter.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="genres">Genre:</label>
+                            <select multiple class="form-control" id="genres" name="genres">
+                                {% for genre in genres %}
+                                <option value="{{ genre }}">{{ genre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="duration">Durasi:</label>
+                            <input type="text" class="form-control" id="duration" name="duration">
+                        </div>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

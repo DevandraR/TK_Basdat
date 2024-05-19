@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                <div class="card-header bg-success text-light text-center">
+                    <h3 class="card-title">Register</h3>
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title text-center">Let's start by telling us a bit about yourself</h5>
+                    <h5 class="card-title text-center">Are you a...</h5>
+                    <!-- Trigger the modal with a button -->
+                    <button type="button" class="btn btn-warning text-dark" data-toggle="modal" data-target="#userModal">User</button>
+                    <button type="button" class="btn btn-warning text-dark" data-toggle="modal" data-target="#labelModal">Label</button>
+                </div>                    
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Modal -->
+<div id="userModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">User Registration</h4>
+        <button type="button" class="close" data-dismiss="modal">×</button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'register_user' %}" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="gender">Gender:</label>
+            <select class="form-control" id="gender" name="gender">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="birthplace">Birthplace:</label>
+            <input type="text" class="form-control" id="birthplace" name="birthplace" required>
+          </div>
+          <div class="form-group">
+            <label for="birthdate">Birthdate:</label>
+            <input type="date" class="form-control" id="birthdate" name="birthdate" required>
+          </div>
+          <div class="form-group">
+            <label for="city">City:</label>
+            <input type="text" class="form-control" id="city" name="city" required>
+          </div>
+          <div class="form-group">
+            <label>Role:</label><br>
+            <input type="checkbox" id="podcaster" name="role" value="Podcaster">
+            <label for="podcaster">Podcaster</label><br>
+            <input type="checkbox" id="artist" name="role" value="Artist">
+            <label for="artist">Artist</label><br>
+            <input type="checkbox" id="songwriter" name="role" value="Songwriter">
+            <label for="songwriter">Songwriter</label>
+          </div>
+          <button type="submit" class="btn btn-warning text-dark">Register</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Label Modal -->
+<div id="labelModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Label Registration</h4>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'register_label' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Password:</label>
+              <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+              <label for="contact">Contact:</label>
+              <input type="tel" class="form-control" id="contact" name="contact" required>
+            </div>
+            <button type="submit" class="btn btn-warning text-dark">Register</button>
+          </form>
+        </div>
+      </div>
+  
+    </div>
+  </div>  
+</div>
+
+{% endblock %}

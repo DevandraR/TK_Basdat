@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-5">
+                <div class="card-header bg-success text-light text-center">
+                    <h3 class="card-title">Add to Playlist Result</h3>
+                </div>
+                <div class="card-body">
+                    {% if success %}
+                        <p>Berhasil menambahkan Lagu dengan judul '{{ song_title }}' ke '{{ playlist_title }}'!</p>
+                    {% else %}
+                        <p>Lagu dengan judul '{{ song_title }}' sudah ditambahkan di '{{ playlist_title }}'!</p>
+                    {% endif %}
+                    <a href="{% url 'detail_playlist' playlist_id %}" class="btn btn-primary">Ke Playlist</a>
+                    <a href="{% url 'song_detail' song_id %}" class="btn btn-warning">Kembali</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
