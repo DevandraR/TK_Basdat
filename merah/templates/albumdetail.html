@@ -44,13 +44,13 @@
                     <a class="nav-link text-white" href="#">Album & Songs</a>
                 </li>  -->
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Album</a>
+                    <a class="nav-link text-white" href="/merah/kelola-album/">Album</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Royalty</a>
+                    <a class="nav-link text-white" href="/merah/cek-royalti/">Royalty</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Logout</a>
+                    <a class="nav-link text-white" href="/logout">Logout</a>
                 </li>
             </ul>
         
@@ -94,7 +94,7 @@
                                         <td>{{ row.total_play }}</td>
                                         <td>{{ row.total_download }}</td>
                                         <td>
-                                            <a href="/hijau/song/{{ row.song_id }}" class="btn btn-primary">Lihat Detail</a>
+                                            <a href="/song/{{ row.song_id }}/" class="btn btn-primary">Lihat Detail</a>
                                             <button class="btn btn-danger">Hapus</button>
                                         </td>
                                     </tr>
