@@ -24,5 +24,5 @@ urlpatterns = [
     path('', include('marmut.urls')),
     path('', include('biru.urls')),
     path('', include('hijau.urls')),
-    path('', include('merah.urls')),
+    path('merah/', include('merah.urls')),
 ]
