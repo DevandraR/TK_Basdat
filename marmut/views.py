@@ -47,6 +47,7 @@ def login(request):
             if user is None:
                 cursor.execute("SELECT * FROM marmut.label WHERE email = %s AND password = %s", [email, password])
                 user = cursor.fetchone()
+                request.session['label_email'] = email
 
             if user is not None:
                 # Convert the UUID to a string before storing it in the session
