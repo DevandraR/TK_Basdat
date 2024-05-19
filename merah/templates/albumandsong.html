@@ -44,10 +44,10 @@
                     <a class="nav-link text-white" href="#">Album & Songs</a>
                 </li>  -->
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="/merah/kelola-album">Album</a>
+                    <a class="nav-link text-white" href="/merah/kelola-album/">Album</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="/merah/cek-royalti">Royalty</a>
+                    <a class="nav-link text-white" href="/merah/cek-royalti/">Royalty</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-white" href="/logout">Logout</a>
@@ -92,7 +92,7 @@
                                         <td>{{ row.jumlah_lagu }}</td>
                                         <td>{{ row.total_durasi }}</td>
                                         <td>
-                                            <a href="/merah/album-detail/{{ row.album_id }}" class="btn btn-primary">Lihat Daftar Lagu</a>
+                                            <a href="/merah/album-detail/{{ row.album_id }}/" class="btn btn-primary">Lihat Daftar Lagu</a>
                                             <form method="post" action="/merah/kelola-album/">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="album_id" value="{{ row.album_id }}">
