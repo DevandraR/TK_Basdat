@@ -17,7 +17,6 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from marmut import views as marmut_views
 
 
 urlpatterns = [
@@ -25,5 +24,5 @@ urlpatterns = [
     path('', include('marmut.urls')),
     path('biru/', include('biru.urls')),
     path('hijau/', include('hijau.urls')),
-     path('merah/', include('merah.urls')),
+    path('merah/', include('merah.urls')),
 ]
