@@ -87,14 +87,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for transaction in transactions %}
                                 <tr>
-                                    <td>1 Bulan</td>
-                                    <td>8 April 2024, 23:00</td>
-                                    <td>8 Mei 2024, 23:00</td>
-                                    <td>E-Wallet</td>
-                                    <td>Rp54.900</td>
+                                    <td>{{ transaction.1 }}</td>
+                                    <td>{{ transaction.3 }}</td>
+                                    <td>{{ transaction.4 }}</td>
+                                    <td>{{ transaction.5 }}</td>
+                                    <td>{{ transaction.6 }}</td>
                                 </tr>
-                                <!-- Add more rows as needed -->
+                                {% endfor %}
                             </tbody>
                         </table>
                         <a href="previousPage.html" class="btn btn-warning">Back</a>
