@@ -17,7 +17,7 @@
                 {% if request.session.user_email %}
                     <!-- Navbar for logged in users -->
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Dashboard</a>
+                        <a class="nav-link text-white" href="{% url 'dashboard' %}">Dashboard</a>
                     </li>
                     {% if request.session.user_type.is_podcaster or request.session.user_type.is_artist or request.session.user_type.is_songwriter or request.session.user_type.is_non_premium %}
                         <!-- Navbar for podcasters, artists, songwriters, and non-premium users -->
@@ -25,13 +25,19 @@
                             <a class="nav-link text-white" href="#">Chart</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="#">Playlist</a>
+                            <a class="nav-link text-white" href="{% url 'playlist' %}">Playlist</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#">Subscribe</a>
                         </li>
                     {% endif %}
                     {% if request.session.user_type.is_premium %}
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Chart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'playlist' %}">Playlist</a>
+                    </li>
                         <!-- Navbar for premium users -->
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#">Downloaded Song</a>
@@ -46,19 +52,19 @@
                     {% if request.session.user_type.is_artist or request.session.user_type.is_songwriter %}
                         <!-- Navbar for artists and songwriters -->
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="/merah/list-album">Album & Songs</a>
+                            <a class="nav-link text-white" href="/list-album">Album & Songs</a>
                         </li>
                     {% endif %}
                     {% if request.session.user_type.is_label %}
                         <!-- Navbar for labels -->
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="/merah/kelola-album">Album</a>
+                            <a class="nav-link text-white" href="/kelola-album">Album</a>
                         </li>
                     {% endif %}
                     {% if request.session.user_type.is_artist or request.session.user_type.is_songwriter or request.session.user_type.is_label %}
                         <!-- Navbar for artists, songwriters, and labels -->
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="/merah/cek-royalti">Royalty</a>
+                            <a class="nav-link text-white" href="/cek-royalti">Royalty</a>
                         </li>
                     {% endif %}
                     <li class="nav-item">

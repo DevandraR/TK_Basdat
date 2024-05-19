@@ -58,6 +58,17 @@ def detail_playlist(request, id_user_playlist):
         """, [playlist['id_playlist']])
         songs = dictfetchall(cursor)  # Get the songs in the playlist
 
+        # Calculate the total number of songs and total duration
+        total_durasi = sum(song['durasi'] for song in songs)
+        jumlah_lagu = len(songs)
+
+        # Update the playlist with the new total duration and number of songs
+        cursor.execute("""
+            UPDATE marmut.user_playlist
+            SET jumlah_lagu = %s, total_durasi = %s
+            WHERE id_user_playlist = %s
+        """, [jumlah_lagu, total_durasi, id_user_playlist])
+
     return render(request, 'detail_playlist.html', {'playlist': playlist, 'songs': songs})
 
 

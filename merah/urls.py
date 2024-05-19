@@ -1,8 +1,6 @@
 from django.urls import path
 from merah.views import cek_royalti, kelola_album_and_song, list_album, album_detail, create_lagu, album_and_song
 
-app_name = 'merah'
-
 urlpatterns = [
     path('cek-royalti/', cek_royalti, name='cek_royalti'),
     path('kelola-album/', kelola_album_and_song, name='kelola_album_and_song'),
